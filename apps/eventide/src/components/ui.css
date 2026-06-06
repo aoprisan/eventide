@@ -40,9 +40,21 @@
   text-align: left;
   overflow: hidden;
   min-height: 116px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: transform 260ms var(--ease-calm), border-color 260ms var(--ease-calm);
+  /* a hairline of light along the top edge gives the glass a lit rim and reads
+     as depth rather than a flat panel */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    transform 260ms var(--ease-calm),
+    border-color 260ms var(--ease-calm),
+    box-shadow 260ms var(--ease-calm);
+}
+.tile:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 16px 36px -22px rgba(0, 0, 0, 0.7);
 }
 .tile:active {
   transform: scale(0.98);
@@ -59,22 +71,28 @@
 }
 .tile-glyph {
   position: absolute;
-  right: -10px;
+  right: -14px;
   bottom: -16px;
-  width: 96px;
-  height: 96px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
-  opacity: 0.5;
-  filter: blur(2px);
+  opacity: 0.7;
+  filter: blur(0.5px);
+  transition: transform 400ms var(--ease-calm), opacity 400ms var(--ease-calm);
 }
+.tile:hover .tile-glyph {
+  transform: scale(1.1) translate(-4px, -4px);
+  opacity: 0.92;
+}
+/* a glowing core with a clean falloff — a small moon/orb/ember, not a smudge */
 .glyph-orb {
-  background: radial-gradient(circle at 40% 35%, rgba(121, 214, 205, 0.7), transparent 65%);
+  background: radial-gradient(circle at 42% 38%, rgba(168, 240, 232, 0.9), rgba(58, 154, 147, 0.32) 42%, transparent 70%);
 }
 .glyph-flame {
-  background: radial-gradient(circle at 50% 60%, rgba(236, 189, 126, 0.7), transparent 62%);
+  background: radial-gradient(circle at 50% 56%, rgba(247, 214, 160, 0.92), rgba(215, 154, 85, 0.34) 42%, transparent 68%);
 }
 .glyph-silent {
-  background: radial-gradient(circle at 50% 50%, rgba(170, 178, 208, 0.6), transparent 64%);
+  background: radial-gradient(circle at 48% 42%, rgba(198, 206, 236, 0.78), rgba(120, 128, 168, 0.26) 46%, transparent 70%);
 }
 
 .tile-grid {
@@ -134,15 +152,32 @@
   justify-content: center;
   padding-bottom: 6px;
 }
+/* During a practice the visual is the focal point, so the transport control
+   recedes to quiet glass with only a warm-tinted glyph — present, not loud. */
 .control-big {
-  width: 76px;
-  height: 76px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, var(--amber), var(--amber-deep));
-  color: #2a1c08;
-  box-shadow: 0 14px 44px -14px rgba(236, 189, 126, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(236, 189, 126, 0.28);
+  color: var(--amber);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 34px -18px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 220ms var(--ease-calm),
+    background 260ms var(--ease-calm),
+    border-color 260ms var(--ease-calm);
+}
+.control-big:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(236, 189, 126, 0.45);
+}
+.control-big:active {
+  transform: scale(0.95);
 }
 
 /* progress arc track */

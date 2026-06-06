@@ -214,14 +214,17 @@ body {
   to { transform: translate3d(1.6%, 1%, 0); }
 }
 
-/* — the moon: a soft gibbous disc that glows in at night, gone by day — */
+/* — the moon: a soft gibbous disc that glows in at night, gone by day.
+     It lives high in the top-right corner — above the heading band — so the
+     serif titles never have to read across its glow, and drifts almost
+     imperceptibly so the sky feels alive rather than pasted-on. — */
 .moon {
   position: fixed;
-  top: 11%;
-  right: 15%;
+  top: calc(var(--safe-top) + 4.5%);
+  right: 11%;
   z-index: 0;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   pointer-events: none;
   opacity: var(--moon-opacity);
@@ -233,10 +236,20 @@ body {
     #cdbb92 80%,
     #a99a73 100%
   );
+  /* a tighter, dimmer halo — distant moonlight, not a lens flare */
   box-shadow:
-    inset -10px -7px 18px rgba(18, 20, 40, 0.4),
-    0 0 36px 6px rgba(245, 235, 205, 0.26),
-    0 0 92px 22px rgba(236, 189, 126, 0.1);
+    inset -8px -6px 15px rgba(18, 20, 40, 0.45),
+    0 0 26px 3px rgba(245, 235, 205, 0.2),
+    0 0 58px 9px rgba(236, 189, 126, 0.06);
+  animation: moonFloat 130s var(--ease-calm) infinite alternate;
+}
+@keyframes moonFloat {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-6px, 11px, 0);
+  }
 }
 
 /* — fine grain so flat areas have tooth, never plasticky — */
@@ -279,6 +292,14 @@ body {
 }
 .shell::-webkit-scrollbar {
   display: none;
+}
+/* Keep every section at its natural height: the shell scrolls when content is
+   tall, rather than flex-shrinking cards and clipping their `overflow: hidden`
+   contents (which silently ate the Tonight hero's subcopy). The `.grow` spacer
+   still expands to push footers down — shrink:0 doesn't stop a flex item from
+   growing. */
+.shell > * {
+  flex-shrink: 0;
 }
 
 .view-enter {
