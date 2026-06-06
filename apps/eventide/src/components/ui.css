@@ -1,0 +1,289 @@
+.topbar {
+  padding: 6px 0 14px;
+  margin: 0 -4px;
+}
+
+.segmented {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.seg {
+  flex: 1 1 auto;
+  min-width: 72px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--moon-dim);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition:
+    background 240ms var(--ease-calm),
+    color 240ms var(--ease-calm),
+    border-color 240ms var(--ease-calm);
+}
+.seg-on {
+  background: linear-gradient(135deg, rgba(121, 214, 205, 0.2), rgba(58, 154, 147, 0.12));
+  border-color: rgba(121, 214, 205, 0.5);
+  color: var(--moon);
+}
+
+/* — Home tiles — */
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  overflow: hidden;
+  min-height: 116px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 260ms var(--ease-calm), border-color 260ms var(--ease-calm);
+}
+.tile:active {
+  transform: scale(0.98);
+}
+.tile-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 380;
+}
+.tile-tag {
+  color: var(--moon-faint);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+.tile-glyph {
+  position: absolute;
+  right: -10px;
+  bottom: -16px;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  opacity: 0.5;
+  filter: blur(2px);
+}
+.glyph-orb {
+  background: radial-gradient(circle at 40% 35%, rgba(121, 214, 205, 0.7), transparent 65%);
+}
+.glyph-flame {
+  background: radial-gradient(circle at 50% 60%, rgba(236, 189, 126, 0.7), transparent 62%);
+}
+.glyph-silent {
+  background: radial-gradient(circle at 50% 50%, rgba(170, 178, 208, 0.6), transparent 64%);
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* — Tonight hero — */
+.tonight-hero {
+  position: relative;
+  padding: 30px 26px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background:
+    radial-gradient(120% 120% at 80% 0%, rgba(236, 189, 126, 0.16), transparent 55%),
+    linear-gradient(155deg, rgba(36, 48, 86, 0.6), rgba(20, 59, 64, 0.45));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.tonight-hero .moon-badge {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  color: var(--amber);
+  opacity: 0.85;
+}
+
+/* — Session running view — */
+.session-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  text-align: center;
+}
+.cue {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 360;
+  font-size: 2rem;
+  letter-spacing: 0.01em;
+  min-height: 1.4em;
+  transition: opacity var(--slow) var(--ease-calm);
+}
+.countdown {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--moon-faint);
+}
+.session-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 6px;
+}
+.control-big {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--amber), var(--amber-deep));
+  color: #2a1c08;
+  box-shadow: 0 14px 44px -14px rgba(236, 189, 126, 0.6);
+}
+
+/* progress arc track */
+.progress-line {
+  width: min(72vw, 320px);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-line > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-deep), var(--teal));
+  transition: width 200ms linear;
+}
+
+/* — stat cards — */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.stat {
+  padding: 20px;
+  border-radius: var(--radius);
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 360;
+  line-height: 1;
+  color: var(--moon);
+}
+.stat-num .unit {
+  font-size: 1rem;
+  color: var(--moon-faint);
+  margin-left: 4px;
+}
+.stat-label {
+  margin-top: 8px;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--moon-faint);
+}
+
+/* — list rows (rituals, history) — */
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+}
+.step-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  color: var(--moon-dim);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 360;
+}
+
+.builder-select {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--moon);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 11px 12px;
+  appearance: none;
+}
+.builder-select option {
+  background: var(--night-2);
+  color: var(--moon);
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--teal-deep));
+  box-shadow: 0 4px 14px -4px rgba(121, 214, 205, 0.7);
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: var(--teal);
+  cursor: pointer;
+}
+
+.toggle {
+  position: relative;
+  width: 50px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 240ms var(--ease-calm);
+  flex-shrink: 0;
+}
+.toggle.on {
+  background: var(--teal-deep);
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 240ms var(--ease-calm);
+}
+.toggle.on::after {
+  transform: translateX(20px);
+}

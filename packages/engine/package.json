@@ -1,0 +1,16 @@
+{
+  "name": "@eventide/engine",
+  "version": "0.1.0",
+  "description": "A reusable guided-session engine: timer/pacer, audio, wake-lock, haptics, and an append-only session store. Branding-free; designed to be embedded by any practice app.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b"
+  }
+}

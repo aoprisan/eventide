@@ -1,0 +1,22 @@
+{
+  "name": "eventide-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Eventide — practices for the turning of the day.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @eventide/app",
+    "build": "npm run build --workspace @eventide/engine && npm run build --workspace @eventide/app",
+    "preview": "npm run preview --workspace @eventide/app",
+    "typecheck": "tsc -b",
+    "lint": "tsc -b",
+    "icons": "node scripts/gen-icons.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5",
+    "typescript": "^5.6.3"
+  }
+}

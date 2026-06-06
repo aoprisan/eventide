@@ -1,0 +1,229 @@
+/* ============================================================
+   Module visuals — orb, flame, silent ring
+   ============================================================ */
+
+/* — Breath orb — */
+.orb-wrap {
+  position: relative;
+  width: min(72vw, 320px);
+  height: min(72vw, 320px);
+  display: grid;
+  place-items: center;
+}
+.orb-aura {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(121, 214, 205, 0.5) 0%,
+    rgba(58, 154, 147, 0.22) 38%,
+    transparent 70%
+  );
+  filter: blur(18px);
+  transition: opacity 240ms linear;
+}
+.orb {
+  position: relative;
+  width: 64%;
+  height: 64%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 32%, #d8fbf6 0%, #79d6cd 28%, #2f8f88 72%, #1c5a56 100%);
+  box-shadow:
+    inset 0 -10px 40px rgba(7, 40, 38, 0.6),
+    inset 0 8px 30px rgba(255, 255, 255, 0.35),
+    0 20px 60px -10px rgba(58, 154, 147, 0.5);
+  will-change: transform;
+  /* transform is set inline from amplitude; transition smooths frame gaps */
+  transition: transform 90ms linear;
+}
+.orb-sheen {
+  position: absolute;
+  top: 14%;
+  left: 20%;
+  width: 38%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 70%);
+  filter: blur(4px);
+}
+.orb-ring {
+  position: absolute;
+  width: 78%;
+  height: 78%;
+  border-radius: 50%;
+  border: 1px solid rgba(121, 214, 205, 0.28);
+  transition: transform 90ms linear;
+}
+
+/* — Candle — */
+.candle-wrap {
+  position: relative;
+  width: 200px;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.flame {
+  position: relative;
+  width: 60px;
+  height: 120px;
+  margin-bottom: -6px;
+  transform-origin: 50% 100%;
+  animation: flicker 2.6s var(--ease-breath) infinite;
+  transition: transform 1.6s var(--ease-calm), opacity 1.6s var(--ease-calm);
+}
+.flame-still {
+  animation: none;
+}
+.flame-glow {
+  position: absolute;
+  inset: -60px -50px -30px;
+  background: radial-gradient(
+    circle at 50% 62%,
+    rgba(236, 189, 126, 0.55) 0%,
+    rgba(215, 154, 85, 0.25) 35%,
+    transparent 68%
+  );
+  filter: blur(10px);
+  animation: glowPulse 2.6s var(--ease-breath) infinite;
+}
+.flame-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 36px;
+  height: 96px;
+  transform: translateX(-50%);
+  background: linear-gradient(to top, #f2c987 0%, #ecb766 40%, #e89b4a 100%);
+  border-radius: 50% 50% 50% 50% / 64% 64% 36% 36%;
+  filter: blur(0.4px);
+}
+.flame-core {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 16px;
+  height: 54px;
+  transform: translateX(-50%);
+  background: linear-gradient(to top, #fff6e6 0%, #ffe7b3 60%, #ffd27a 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+.flame-out {
+  transform: scaleY(0.04) scaleX(0.5);
+  opacity: 0;
+  animation: none;
+}
+.smoke {
+  position: absolute;
+  bottom: 96px;
+  width: 8px;
+  height: 60px;
+  opacity: 0;
+  background: linear-gradient(to top, rgba(200, 205, 220, 0.5), transparent);
+  border-radius: 50%;
+  filter: blur(5px);
+}
+.smoke-rise {
+  animation: smoke 2.4s ease-out forwards;
+}
+.candle-body {
+  position: relative;
+  width: 96px;
+  height: 200px;
+  background: linear-gradient(90deg, #1a2440 0%, #2a3658 45%, #1a2440 100%);
+  border-radius: 14px 14px 8px 8px;
+  box-shadow: inset 0 6px 20px rgba(255, 255, 255, 0.08), 0 -2px 16px rgba(236, 189, 126, 0.12);
+}
+.wick {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 3px;
+  height: 12px;
+  transform: translateX(-50%);
+  background: #2a1c10;
+  border-radius: 2px;
+}
+.candle-pool {
+  position: absolute;
+  bottom: 196px;
+  width: 86px;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(236, 189, 126, 0.45), transparent 70%);
+  border-radius: 50%;
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1) scaleX(1) rotate(-1deg); }
+  25% { transform: scaleY(1.06) scaleX(0.97) rotate(1deg); }
+  50% { transform: scaleY(0.97) scaleX(1.03) rotate(-0.5deg); }
+  75% { transform: scaleY(1.03) scaleX(0.98) rotate(0.8deg); }
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@keyframes smoke {
+  0% { opacity: 0; transform: translateY(0) scaleX(1); }
+  20% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-90px) scaleX(2.4); }
+}
+
+/* — Silent / meditation — */
+.silent-wrap {
+  position: relative;
+  width: min(72vw, 320px);
+  height: min(72vw, 320px);
+  display: grid;
+  place-items: center;
+}
+.stars {
+  position: absolute;
+  inset: -40%;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 70% 20%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 80% 70%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 35% 80%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 12% 65%, rgba(255, 255, 255, 0.5), transparent);
+  animation: twinkle 6s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+.silent-ring,
+.silent-ring-2 {
+  position: absolute;
+  width: 58%;
+  height: 58%;
+  border-radius: 50%;
+  border: 1px solid rgba(170, 178, 208, 0.35);
+  animation: breathe 9s var(--ease-breath) infinite;
+}
+.silent-ring-2 {
+  width: 44%;
+  height: 44%;
+  border-color: rgba(121, 214, 205, 0.3);
+  animation-delay: -1.5s;
+}
+.silent-still {
+  animation: none;
+}
+.silent-core {
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 38%, rgba(170, 178, 208, 0.6), rgba(36, 48, 86, 0.5) 70%, transparent);
+  filter: blur(2px);
+  animation: breathe 9s var(--ease-breath) infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(0.82); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 1; }
+}

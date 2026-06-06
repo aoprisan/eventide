@@ -1,0 +1,353 @@
+/* ============================================================
+   Eventide — "Nocturne" design system
+   Twilight folding into night: deep indigo → teal-black, one warm
+   candle-amber accent, a cool moonlit-teal breath glow. Calm is the product:
+   slow eased motion, soft type, dim atmosphere, generous space.
+   ============================================================ */
+
+:root {
+  /* — night palette — */
+  --night-0: #05070f; /* near-black indigo, page base */
+  --night-1: #0a1020;
+  --night-2: #111a30;
+  --night-3: #1a2440;
+  --veil: rgba(8, 12, 24, 0.6);
+
+  /* — atmosphere accents (used in gradient mesh) — */
+  --dusk-indigo: #243056;
+  --dusk-teal: #143b40;
+  --dusk-plum: #2a2348;
+
+  /* — light — */
+  --moon: #eef0fb; /* primary text, moonlight */
+  --moon-dim: #aab2d0; /* secondary text */
+  --moon-faint: #6b7398; /* tertiary / hints */
+
+  /* — accents — */
+  --amber: #ecbd7e; /* candle / warmth — the single warm note */
+  --amber-deep: #d79a55;
+  --teal: #79d6cd; /* breath orb glow, cool */
+  --teal-deep: #3a9a93;
+
+  /* — type — */
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+  --font-body: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  /* — motion — */
+  --ease-calm: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
+  --slow: 700ms;
+  --slower: 1200ms;
+
+  /* — geometry — */
+  --radius: 20px;
+  --radius-lg: 28px;
+  --maxw: 540px;
+  --gap: 18px;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--moon);
+  background: var(--night-0);
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* the shell scrolls, not the body */
+  overscroll-behavior: none;
+}
+
+/* — the dusk sky: a layered gradient mesh living behind everything — */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 80% at 15% -10%, var(--dusk-indigo) 0%, transparent 55%),
+    radial-gradient(110% 70% at 90% 0%, var(--dusk-plum) 0%, transparent 50%),
+    radial-gradient(140% 90% at 50% 115%, var(--dusk-teal) 0%, transparent 60%),
+    linear-gradient(180deg, var(--night-1) 0%, var(--night-0) 70%);
+  /* a slow, almost-imperceptible drift */
+  animation: skyDrift 60s var(--ease-calm) infinite alternate;
+}
+@keyframes skyDrift {
+  from {
+    transform: scale(1.05) translate3d(-1%, -1%, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(1.5%, 1%, 0);
+  }
+}
+
+/* — fine grain so flat areas have tooth, never plasticky — */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* — the dimming veil that deepens toward sleep at the end of a ritual — */
+.dim-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #000;
+  pointer-events: none;
+  transition: opacity var(--slower) var(--ease-calm);
+}
+
+/* ============================================================
+   Layout shell
+   ============================================================ */
+.shell {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  padding: calc(var(--safe-top) + 8px) 22px calc(var(--safe-bottom) + 22px);
+}
+.shell::-webkit-scrollbar {
+  display: none;
+}
+
+.view-enter {
+  animation: fadeUp var(--slow) var(--ease-calm) both;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* staggered reveal for lists of tiles */
+.stagger > * {
+  animation: fadeUp var(--slow) var(--ease-calm) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 60ms; }
+.stagger > *:nth-child(2) { animation-delay: 140ms; }
+.stagger > *:nth-child(3) { animation-delay: 220ms; }
+.stagger > *:nth-child(4) { animation-delay: 300ms; }
+.stagger > *:nth-child(5) { animation-delay: 380ms; }
+.stagger > *:nth-child(6) { animation-delay: 460ms; }
+
+/* ============================================================
+   Type
+   ============================================================ */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 340;
+  font-size: clamp(2.4rem, 9vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.serif-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 360;
+}
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--moon-faint);
+  font-weight: 600;
+}
+.muted {
+  color: var(--moon-dim);
+}
+.faint {
+  color: var(--moon-faint);
+}
+
+/* ============================================================
+   Buttons & controls
+   ============================================================ */
+button {
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition:
+    transform 220ms var(--ease-calm),
+    background 320ms var(--ease-calm),
+    box-shadow 320ms var(--ease-calm);
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--amber) 0%, var(--amber-deep) 100%);
+  color: #2a1c08;
+  box-shadow: 0 10px 40px -12px rgba(236, 189, 126, 0.55);
+}
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--moon);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(6px);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+.btn-block {
+  width: 100%;
+}
+
+/* a soft glass card */
+.card {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.055) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--moon-dim);
+  transition: background 240ms var(--ease-calm), color 240ms var(--ease-calm);
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--moon);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+.between {
+  justify-content: space-between;
+}
+.center {
+  justify-content: center;
+  align-items: center;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.grow {
+  flex: 1;
+}
+.gap {
+  gap: var(--gap);
+}
+.gap-sm {
+  gap: 10px;
+}
+.full {
+  width: 100%;
+}
+.text-center {
+  text-align: center;
+}
+
+input[type='text'],
+textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--moon);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  width: 100%;
+  resize: none;
+  transition: border-color 240ms var(--ease-calm), background 240ms var(--ease-calm);
+}
+input[type='text']:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--teal-deep);
+  background: rgba(255, 255, 255, 0.06);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--moon-faint);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  margin: 8px 0;
+}
