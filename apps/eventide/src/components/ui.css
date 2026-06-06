@@ -189,6 +189,100 @@
   color: var(--moon-faint);
 }
 
+/* — Insights hero: the streak, featured, with a ribbon of recent nights — */
+.insight-hero {
+  position: relative;
+  padding: 26px 26px 24px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background:
+    radial-gradient(130% 130% at 12% 0%, rgba(121, 214, 205, 0.15), transparent 55%),
+    radial-gradient(120% 120% at 92% 8%, rgba(236, 189, 126, 0.1), transparent 55%),
+    linear-gradient(160deg, rgba(36, 48, 86, 0.5), rgba(20, 59, 64, 0.32));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.streak-num {
+  font-family: var(--font-display);
+  font-weight: 330;
+  font-size: clamp(3.4rem, 16vw, 4.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--moon);
+}
+.streak-num .unit {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--amber);
+  margin-left: 10px;
+  letter-spacing: 0.01em;
+}
+
+/* the last N nights as a calm ribbon — lit on the days a session happened.
+   A direct picture of "insights computed from sessions you actually did." */
+.nights-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+}
+.night-dot {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  transition: background var(--slow) var(--ease-calm), box-shadow var(--slow) var(--ease-calm);
+}
+.night-dot.lit {
+  background: linear-gradient(90deg, var(--teal-deep), var(--teal));
+  box-shadow: 0 0 14px -3px rgba(121, 214, 205, 0.65);
+}
+.night-dot.today {
+  outline: 1px solid rgba(236, 189, 126, 0.55);
+  outline-offset: 2px;
+}
+.ribbon-caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--moon-faint);
+}
+
+/* secondary stats, quieter than the hero — a single thin strip */
+.mini-stats {
+  display: flex;
+  margin-top: 18px;
+}
+.mini-stat {
+  flex: 1;
+  padding: 4px 2px;
+}
+.mini-stat + .mini-stat {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding-left: 18px;
+}
+.mini-num {
+  font-family: var(--font-display);
+  font-weight: 340;
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--moon);
+}
+.mini-num .unit {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--moon-faint);
+  margin-left: 4px;
+}
+.mini-label {
+  margin-top: 7px;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--moon-faint);
+}
+
 /* — list rows (rituals, history) — */
 .list-row {
   display: flex;

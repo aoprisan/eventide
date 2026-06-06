@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { NavContext, type Nav, type Route } from './nav.js';
+import { useSky } from './sky/useSky.js';
 import { HomeScreen } from './screens/HomeScreen.js';
 import { SetupScreen } from './screens/SetupScreen.js';
 import { SessionScreen } from './screens/SessionScreen.js';
@@ -9,6 +10,7 @@ import { InsightsScreen } from './screens/InsightsScreen.js';
 import { SettingsScreen } from './screens/SettingsScreen.js';
 
 export function App() {
+  useSky();
   const [stack, setStack] = useState<Route[]>([{ name: 'home' }]);
 
   const push = useCallback((route: Route) => {
@@ -39,6 +41,9 @@ export function App() {
   return (
     <NavContext.Provider value={nav}>
       <div className="sky" />
+      <div className="skystars" />
+      <div className="skystars skystars-2" />
+      <div className="moon" aria-hidden />
       <div className="grain" />
       <Screen key={routeKey(route, stack.length)} route={route} />
     </NavContext.Provider>
