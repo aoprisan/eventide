@@ -286,6 +286,23 @@ body {
   transition: opacity var(--slower) var(--ease-calm);
 }
 
+/* — the morning counterpart: a warm dawn light rising from below that lifts
+     the screen as the chain progresses, then clears as the day begins — */
+.wake-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: radial-gradient(
+    130% 85% at 50% 102%,
+    rgba(255, 216, 170, 0.95),
+    rgba(255, 188, 142, 0.4) 44%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  transition: opacity var(--slower) var(--ease-calm);
+}
+
 /* ============================================================
    Layout shell
    ============================================================ */

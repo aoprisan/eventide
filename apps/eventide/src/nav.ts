@@ -1,12 +1,12 @@
 import { createContext, useContext } from 'react';
-import type { Ritual, SessionSpec } from '@eventide/engine';
+import type { Ritual, RitualKind, SessionSpec } from '@eventide/engine';
 
 export type Route =
   | { name: 'home' }
   | { name: 'setup'; module: 'breath' | 'candle' | 'meditation' }
   | { name: 'session'; spec: SessionSpec; title: string }
-  | { name: 'tonight' }
-  | { name: 'tonight-run'; ritual: Ritual }
+  | { name: 'ritual-list'; kind: RitualKind }
+  | { name: 'ritual-run'; ritual: Ritual }
   | { name: 'insights' }
   | { name: 'settings' };
 

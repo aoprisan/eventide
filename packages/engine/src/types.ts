@@ -38,7 +38,7 @@ export interface BreathPattern {
 }
 
 /** Built-in synthesized ambient beds. No external audio assets required. */
-export type AmbientId = 'rain' | 'drone' | 'ocean' | 'night';
+export type AmbientId = 'rain' | 'drone' | 'ocean' | 'night' | 'dawn';
 
 export interface AudioSpec {
   /** Tone cues at phase/session boundaries (rising/steady/falling). */
@@ -116,7 +116,11 @@ export interface StoredSession extends SessionResult {
   v: number;
 }
 
-/** A saved "Tonight" chain — an ordered list of module steps. */
+/** Which end of the day a ritual orchestrates. Evening winds down toward
+ *  sleep; morning lifts toward the day. */
+export type RitualKind = 'evening' | 'morning';
+
+/** A saved chain — an ordered list of module steps. */
 export interface RitualStep {
   module: ModuleId;
   /** Seconds for timed steps; reps for counted steps. */
@@ -129,7 +133,9 @@ export interface Ritual {
   id: string;
   name: string;
   steps: RitualStep[];
-  /** Whether the screen should dim toward the end of the chain. */
+  /** Which end of the day this chain belongs to. Defaults to 'evening'. */
+  kind?: RitualKind;
+  /** Whether the screen should dim toward the end of the chain (evening). */
   dimToSleep?: boolean;
 }
 

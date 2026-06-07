@@ -1,8 +1,8 @@
 import { useNav } from '../nav.js';
 import { useEngine } from '../engine/EngineContext.js';
-import { MODULES } from '../modules.js';
+import { FLOWS, MODULES } from '../modules.js';
 import { Icon } from '../components/ui.js';
-import { computeInsights } from '@eventide/engine';
+import { computeInsights, type RitualKind } from '@eventide/engine';
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -13,10 +13,18 @@ function greeting(): string {
   return 'Late night';
 }
 
+// Before midday the morning chain leads; after, the evening one does. Both are
+// always one tap away — the order just follows the hour.
+function flowOrder(): RitualKind[] {
+  const h = new Date().getHours();
+  return h >= 4 && h < 12 ? ['morning', 'evening'] : ['evening', 'morning'];
+}
+
 export function HomeScreen() {
   const nav = useNav();
   const { sessions } = useEngine();
   const insights = computeInsights(sessions);
+  const order = flowOrder();
 
   return (
     <div className="shell view-enter">
@@ -37,19 +45,29 @@ export function HomeScreen() {
         )}
       </header>
 
-      <button
-        className="tonight-hero view-enter"
-        onClick={() => nav.push({ name: 'tonight' })}
-      >
-        <span className="moon-badge">
-          <Icon name="moon" size={26} />
-        </span>
-        <span className="eyebrow">Tonight</span>
-        <h2 style={{ fontSize: '2rem', marginTop: 6 }}>Begin the wind-down</h2>
-        <p className="muted" style={{ marginTop: 8, maxWidth: 320 }}>
-          A calm sequence to carry you toward sleep, hands-free.
-        </p>
-      </button>
+      <div className="col gap stagger">
+        {order.map((kind, i) => {
+          const flow = FLOWS[kind];
+          return (
+            <button
+              key={kind}
+              className={`tonight-hero view-enter${kind === 'morning' ? ' hero-morning' : ''}`}
+              onClick={() => nav.push({ name: 'ritual-list', kind })}
+            >
+              <span className="moon-badge">
+                <Icon name={flow.icon} size={26} />
+              </span>
+              <span className="eyebrow">{flow.heroEyebrow}</span>
+              <h2 style={{ fontSize: i === 0 ? '2rem' : '1.6rem', marginTop: 6 }}>
+                {flow.heroTitle}
+              </h2>
+              <p className="muted" style={{ marginTop: 8, maxWidth: 320 }}>
+                {flow.heroSub}
+              </p>
+            </button>
+          );
+        })}
+      </div>
 
       <div className="col" style={{ marginTop: 30, gap: 14 }}>
         <span className="eyebrow">Or a single practice</span>

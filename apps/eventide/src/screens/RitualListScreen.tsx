@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNav } from '../nav.js';
 import { useEngine } from '../engine/EngineContext.js';
-import { DEFAULT_RITUAL, MODULES, formatDuration } from '../modules.js';
+import { FLOWS, MODULES, formatDuration, ritualsForKind } from '../modules.js';
 import { Icon, TopBar } from '../components/ui.js';
-import type { ModuleId, Ritual, RitualStep } from '@eventide/engine';
+import type { ModuleId, Ritual, RitualKind, RitualStep } from '@eventide/engine';
 
 const BUILDABLE: ModuleId[] = ['candle', 'breath', 'meditation'];
 
@@ -12,18 +12,23 @@ function stepLabel(step: RitualStep): string {
   return `${name} · ${formatDuration(step.amount)}`;
 }
 
-export function TonightScreen() {
+/**
+ * The list of saved chains for one end of the day. Morning and evening render
+ * the same screen — only the copy and the flow's `kind` differ (see FLOWS).
+ */
+export function RitualListScreen({ kind }: { kind: RitualKind }) {
   const nav = useNav();
   const { rituals, setRituals, unlockAudio } = useEngine();
   const [building, setBuilding] = useState(false);
+  const flow = FLOWS[kind];
 
   async function begin(ritual: Ritual) {
     // Unlock audio inside the tap so the chain's ambient bed can start.
     await unlockAudio();
-    nav.push({ name: 'tonight-run', ritual });
+    nav.push({ name: 'ritual-run', ritual });
   }
 
-  const all: Ritual[] = [DEFAULT_RITUAL, ...rituals];
+  const all = ritualsForKind(kind, rituals);
 
   function remove(id: string) {
     setRituals(rituals.filter((r) => r.id !== id));
@@ -33,11 +38,10 @@ export function TonightScreen() {
     <div className="shell view-enter">
       <TopBar />
       <header className="col" style={{ marginBottom: 24 }}>
-        <span className="eyebrow">Tonight</span>
-        <h1 className="display">Your rituals</h1>
+        <span className="eyebrow">{flow.heroEyebrow}</span>
+        <h1 className="display">{flow.listTitle}</h1>
         <p className="muted" style={{ marginTop: 10 }}>
-          A chain runs hands-free — each practice flows into the next, and the screen
-          softens toward sleep.
+          {flow.listIntro}
         </p>
       </header>
 
@@ -46,7 +50,7 @@ export function TonightScreen() {
           <div key={ritual.id} className="card" style={{ padding: 22 }}>
             <div className="row between" style={{ marginBottom: 14 }}>
               <h2 style={{ fontSize: '1.5rem' }}>{ritual.name}</h2>
-              {ritual.id !== 'default' && (
+              {ritual.id !== flow.defaultRitual.id && (
                 <button className="icon-btn" aria-label="Delete" onClick={() => remove(ritual.id)}>
                   <Icon name="trash" size={18} />
                 </button>
@@ -68,6 +72,7 @@ export function TonightScreen() {
 
       {building ? (
         <Builder
+          kind={kind}
           onCancel={() => setBuilding(false)}
           onSave={(r) => {
             setRituals([...rituals, r]);
@@ -88,14 +93,17 @@ export function TonightScreen() {
 }
 
 function Builder({
+  kind,
   onCancel,
   onSave,
 }: {
+  kind: RitualKind;
   onCancel: () => void;
   onSave: (ritual: Ritual) => void;
 }) {
-  const [name, setName] = useState('My ritual');
-  const [steps, setSteps] = useState<RitualStep[]>([{ module: 'breath', amount: 300 }]);
+  const flow = FLOWS[kind];
+  const [name, setName] = useState(flow.builderName);
+  const [steps, setSteps] = useState<RitualStep[]>([{ ...flow.builderSeed }]);
 
   function addStep() {
     setSteps((s) => [...s, { module: 'candle', amount: 120 }]);
@@ -162,9 +170,10 @@ function Builder({
           onClick={() =>
             onSave({
               id: `ritual-${Date.now()}`,
-              name: name.trim() || 'My ritual',
+              name: name.trim() || flow.builderName,
+              kind,
               steps,
-              dimToSleep: true,
+              dimToSleep: kind === 'evening',
             })
           }
         >

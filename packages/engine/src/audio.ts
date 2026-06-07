@@ -151,9 +151,16 @@ export class AudioEngine {
   ): AudioScheduledSourceNode[] {
     switch (id) {
       case 'drone':
-      case 'night': {
-        // Stacked detuned sines — a warm, slow drone.
-        const freqs = id === 'night' ? [110, 164.81, 220] : [98, 146.83, 196];
+      case 'night':
+      case 'dawn': {
+        // Stacked detuned sines — a warm, slow drone. 'dawn' sits a fifth
+        // higher and brighter than 'night', so morning reads as a lift.
+        const freqs =
+          id === 'night'
+            ? [110, 164.81, 220]
+            : id === 'dawn'
+              ? [164.81, 246.94, 329.63]
+              : [98, 146.83, 196];
         return freqs.map((f, i) => {
           const osc = ctx.createOscillator();
           const g = ctx.createGain();

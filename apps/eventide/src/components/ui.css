@@ -124,6 +124,18 @@
   opacity: 0.85;
 }
 
+/* — Morning hero: the same shape, warmed toward sunrise — */
+.tonight-hero.hero-morning {
+  background:
+    radial-gradient(120% 120% at 12% 0%, rgba(255, 198, 142, 0.22), transparent 58%),
+    radial-gradient(120% 120% at 82% 0%, rgba(255, 162, 120, 0.18), transparent 55%),
+    linear-gradient(155deg, rgba(92, 66, 58, 0.55), rgba(120, 84, 58, 0.42));
+}
+.tonight-hero.hero-morning .moon-badge {
+  color: #ffd6a3;
+  opacity: 0.95;
+}
+
 /* — Session running view — */
 .session-stage {
   flex: 1;

@@ -8,8 +8,8 @@ import type { Season } from './sky/sky.js';
 import { HomeScreen } from './screens/HomeScreen.js';
 import { SetupScreen } from './screens/SetupScreen.js';
 import { SessionScreen } from './screens/SessionScreen.js';
-import { TonightScreen } from './screens/TonightScreen.js';
-import { TonightRunScreen } from './screens/TonightRunScreen.js';
+import { RitualListScreen } from './screens/RitualListScreen.js';
+import { RitualRunScreen } from './screens/RitualRunScreen.js';
 import { InsightsScreen } from './screens/InsightsScreen.js';
 import { SettingsScreen } from './screens/SettingsScreen.js';
 
@@ -72,10 +72,10 @@ function Screen({ route }: { route: Route }) {
       return <SetupScreen module={route.module} />;
     case 'session':
       return <SessionScreen spec={route.spec} title={route.title} />;
-    case 'tonight':
-      return <TonightScreen />;
-    case 'tonight-run':
-      return <TonightRunScreen ritual={route.ritual} />;
+    case 'ritual-list':
+      return <RitualListScreen kind={route.kind} />;
+    case 'ritual-run':
+      return <RitualRunScreen ritual={route.ritual} />;
     case 'insights':
       return <InsightsScreen />;
     case 'settings':
