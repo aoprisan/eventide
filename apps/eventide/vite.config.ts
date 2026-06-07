@@ -7,10 +7,17 @@ const base = process.env.VITE_BASE ?? '/';
 
 export default defineConfig({
   base,
+  // Stamped at build time so Settings can show which build is running.
+  define: {
+    __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+  },
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // We drive registration ourselves via virtual:pwa-register/react so the
+      // Settings screen can surface "update ready" state and a manual check.
+      injectRegister: false,
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'Eventide — practices for the turning of the day',

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useEngine } from '../engine/EngineContext.js';
+import { usePwa } from '../pwa/PwaContext.js';
 import { Segmented, TopBar } from '../components/ui.js';
 import type { Season } from '../sky/sky.js';
 import type { MotionPref } from '@eventide/engine';
@@ -125,12 +126,81 @@ export function SettingsScreen() {
           )}
         </div>
 
+        <div className="divider" />
+
+        <AboutBuild />
+
         <p className="faint text-center" style={{ marginTop: 12, fontSize: '0.8rem' }}>
           Eventide · practices for the turning of the day
         </p>
       </div>
     </div>
   );
+}
+
+function AboutBuild() {
+  const { needRefresh, checking, buildTime, checkForUpdate, applyUpdate } = usePwa();
+  const [checked, setChecked] = useState(false);
+
+  async function onCheck() {
+    setChecked(false);
+    await checkForUpdate();
+    // If a newer build was found, `needRefresh` flips and we show Update instead.
+    setChecked(true);
+  }
+
+  return (
+    <div className="col gap-sm">
+      <span className="eyebrow">About this build</span>
+      <div className="row between">
+        <span className="faint" style={{ fontSize: '0.9rem' }}>
+          Built
+        </span>
+        <span className="muted" style={{ fontSize: '0.9rem' }}>
+          {formatBuildTime(buildTime)}
+        </span>
+      </div>
+
+      {needRefresh ? (
+        <>
+          <button className="btn btn-primary btn-block" onClick={applyUpdate} style={{ marginTop: 6 }}>
+            Update & restart
+          </button>
+          <span className="faint text-center" style={{ fontSize: '0.85rem' }}>
+            A newer version is ready.
+          </span>
+        </>
+      ) : (
+        <>
+          <button
+            className="btn btn-ghost btn-block"
+            onClick={() => void onCheck()}
+            disabled={checking}
+            style={{ marginTop: 6 }}
+          >
+            {checking ? 'Checking…' : 'Check for updates'}
+          </button>
+          {checked && !checking && (
+            <span className="faint text-center" style={{ fontSize: '0.85rem' }}>
+              You're on the latest version.
+            </span>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+function formatBuildTime(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 function ToggleRow({

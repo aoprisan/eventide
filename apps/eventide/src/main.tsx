@@ -10,11 +10,14 @@ import '@fontsource/hanken-grotesk/600.css';
 import './styles/global.css';
 import { App } from './App.js';
 import { EngineProvider } from './engine/EngineContext.js';
+import { PwaProvider } from './pwa/PwaContext.js';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <EngineProvider>
-      <App />
-    </EngineProvider>
+    <PwaProvider>
+      <EngineProvider>
+        <App />
+      </EngineProvider>
+    </PwaProvider>
   </StrictMode>,
 );
