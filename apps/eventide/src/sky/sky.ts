@@ -54,11 +54,19 @@ function dayOfYear(d: Date): number {
   return Math.floor((d.getTime() - start.getTime()) / 86_400_000);
 }
 
+/**
+ * The season as people actually feel it — **meteorological**, by calendar
+ * month: spring is Mar–May, summer Jun–Aug, autumn Sep–Nov, winter Dec–Feb.
+ * (We deliberately don't use the astronomical solstice/equinox boundaries: a
+ * warm day in early June should wear summer, not the spring it technically
+ * still is until the 21st.) The sky's light still tracks the real solar arc via
+ * {@link sunTimes}; only the seasonal *tint* keys off the month.
+ */
 export function seasonOf(d: Date): Season {
-  const n = dayOfYear(d);
-  if (n >= 79 && n < 172) return 'spring';
-  if (n >= 172 && n < 266) return 'summer';
-  if (n >= 266 && n < 355) return 'autumn';
+  const m = d.getMonth();
+  if (m >= 2 && m <= 4) return 'spring';
+  if (m >= 5 && m <= 7) return 'summer';
+  if (m >= 8 && m <= 10) return 'autumn';
   return 'winter';
 }
 
