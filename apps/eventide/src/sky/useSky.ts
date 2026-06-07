@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { skyAt } from './sky.js';
+import { skyAt, type Season } from './sky.js';
 
 /**
  * Dev/QA only: `?sky=<hour>&doy=<dayOfYear>` pins the sky to a simulated moment
@@ -24,20 +24,28 @@ function simulatedDate(): Date | null {
 }
 
 /**
+ * The moment the whole atmosphere reads from — the dev-simulated instant when
+ * `?sky=…` is present, otherwise the real now. Shared by the sky and the
+ * seasonal graphics so they never disagree about what time/season it is.
+ */
+export function activeDate(): Date {
+  return simulatedDate() ?? new Date();
+}
+
+/**
  * Drives the living sky. Resolves the current {@link skyAt} state into CSS
  * custom properties on :root (the `.sky`, `.skystars`, and `.moon` layers read
  * them), keeps the PWA status-bar colour in step, and re-resolves every minute
  * and whenever the app returns to the foreground. The colour vars are animated
  * in CSS, so each tick is a soft drift rather than a cut.
  */
-export function useSky(): void {
+export function useSky(seasonOverride?: Season): void {
   useEffect(() => {
     const root = document.documentElement;
     const meta = document.querySelector('meta[name="theme-color"]');
 
-    const sim = simulatedDate();
     function apply() {
-      const s = skyAt(sim ?? new Date());
+      const s = skyAt(activeDate(), seasonOverride);
       root.style.setProperty('--sky-top', s.top);
       root.style.setProperty('--sky-mid', s.mid);
       root.style.setProperty('--sky-bottom', s.bottom);
@@ -46,6 +54,8 @@ export function useSky(): void {
       root.style.setProperty('--sky-glow-y', s.glowY);
       root.style.setProperty('--star-opacity', String(s.starOpacity));
       root.style.setProperty('--moon-opacity', String(s.moonOpacity));
+      root.style.setProperty('--phase-accent', s.accent);
+      root.style.setProperty('--phase-accent-rgb', s.accentRgb);
       root.dataset.phase = s.phase;
       root.dataset.season = s.season;
       meta?.setAttribute('content', s.bottom);
@@ -61,5 +71,5 @@ export function useSky(): void {
       window.clearInterval(id);
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, []);
+  }, [seasonOverride]);
 }

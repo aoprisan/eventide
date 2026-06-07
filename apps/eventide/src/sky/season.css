@@ -1,0 +1,151 @@
+/* ============================================================
+   Seasonal weather — a quiet field of motion over the living sky.
+   One atmosphere per season; all of it dim, slow, and behind the
+   reading surface (z-index 1, under the .shell at z-index 2).
+   ============================================================ */
+
+.season-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  /* fade the whole field in when the season is first painted/changed */
+  animation: seasonFade 2400ms var(--ease-calm) both;
+}
+@keyframes seasonFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* — the seasonal veil: a faint wash that gives each season its own light,
+     layered beneath the particles. Kept low so moonlit type stays readable. — */
+.season-veil {
+  position: absolute;
+  inset: 0;
+}
+.season-winter .season-veil {
+  /* frost gathering in the upper corners + a cool breath over everything */
+  background:
+    radial-gradient(60% 44% at 0% 0%, rgba(176, 206, 240, 0.07), transparent 70%),
+    radial-gradient(60% 44% at 100% 0%, rgba(176, 206, 240, 0.07), transparent 70%),
+    radial-gradient(120% 80% at 50% 120%, rgba(150, 186, 226, 0.05), transparent 60%);
+}
+.season-spring .season-veil {
+  /* a soft fresh-green and rose glow rising from the horizon */
+  background:
+    radial-gradient(120% 70% at 50% 118%, rgba(150, 200, 168, 0.07), transparent 62%),
+    radial-gradient(80% 50% at 78% 100%, rgba(238, 178, 198, 0.05), transparent 64%);
+}
+.season-summer .season-veil {
+  /* a warm amber haze low on the page, like heat held after dusk */
+  background:
+    radial-gradient(130% 78% at 50% 122%, rgba(236, 189, 126, 0.08), transparent 60%),
+    radial-gradient(90% 56% at 16% 108%, rgba(215, 154, 85, 0.05), transparent 66%);
+}
+.season-autumn .season-veil {
+  /* burnished amber/rust settling toward the bottom edge */
+  background:
+    radial-gradient(126% 80% at 50% 120%, rgba(200, 122, 64, 0.08), transparent 60%),
+    radial-gradient(86% 52% at 84% 104%, rgba(176, 96, 52, 0.05), transparent 66%);
+}
+
+/* ---- falling particles: snow, petals, leaves ---------------------------- */
+
+/* outer element: holds the horizontal position and sways on a breeze */
+.p {
+  position: absolute;
+  top: 0;
+  will-change: transform;
+  animation: seasonSway ease-in-out infinite alternate;
+}
+@keyframes seasonSway {
+  from {
+    transform: translateX(calc(var(--sway) * -1));
+  }
+  to {
+    transform: translateX(var(--sway));
+  }
+}
+
+/* inner element: falls the full height while tumbling */
+.p-fall {
+  display: block;
+  will-change: transform;
+  animation: seasonFall linear infinite;
+}
+@keyframes seasonFall {
+  from {
+    transform: translateY(-14vh) rotate(0deg);
+  }
+  to {
+    transform: translateY(116vh) rotate(var(--spin, 0deg));
+  }
+}
+
+/* snow — a soft white mote with a faint cool halo */
+.s-snow {
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.95), rgba(214, 230, 255, 0.55) 55%, transparent 78%);
+  box-shadow: 0 0 4px rgba(220, 234, 255, 0.4);
+}
+
+/* petal — a rounded teardrop, rose fading to cream */
+.s-petal {
+  border-radius: 78% 12% 78% 12%;
+  background: linear-gradient(135deg, rgba(246, 196, 212, 0.95), rgba(246, 232, 214, 0.85));
+  box-shadow: inset 0 0 3px rgba(214, 142, 166, 0.4);
+}
+
+/* leaf — a pointed oval with a hint of a midrib, amber turning to rust */
+.s-leaf {
+  border-radius: 0 100% 0 100%;
+  background: linear-gradient(125deg, rgba(228, 168, 92, 0.95), rgba(192, 96, 52, 0.92));
+  box-shadow: inset 0 0 0 0.5px rgba(120, 60, 30, 0.25);
+}
+
+/* ---- fireflies ---------------------------------------------------------- */
+
+.firefly {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 240, 196, 0.95), rgba(236, 189, 126, 0.6) 45%, transparent 72%);
+  box-shadow: 0 0 8px 2px rgba(236, 189, 126, 0.5);
+  animation: firefly ease-in-out infinite;
+}
+@keyframes firefly {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: var(--lo, 0.2);
+  }
+  50% {
+    transform: translate3d(var(--fx, 0), var(--fy, 0), 0);
+    opacity: var(--hi, 0.8);
+  }
+}
+
+/* ---- reduced motion: settle into a still, on-screen scatter ------------- */
+@media (prefers-reduced-motion: reduce) {
+  .season-layer {
+    animation: none;
+  }
+  .p {
+    animation: none;
+    transform: none;
+  }
+  .p-fall {
+    animation: none;
+    /* rest where they would be mid-fall, never frozen off-screen */
+    transform: translateY(var(--rest-y, 40vh)) rotate(calc(var(--spin, 0deg) * 0.5));
+  }
+  .firefly {
+    animation: none;
+    opacity: var(--hi, 0.6);
+  }
+}

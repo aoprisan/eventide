@@ -21,7 +21,7 @@ export function HomeScreen() {
   return (
     <div className="shell view-enter">
       <header className="col" style={{ paddingTop: 18, paddingBottom: 30 }}>
-        <span className="eyebrow">{greeting()}</span>
+        <span className="eyebrow eyebrow-phase">{greeting()}</span>
         <h1 className="display" style={{ marginTop: 8 }}>
           The turning
           <br />

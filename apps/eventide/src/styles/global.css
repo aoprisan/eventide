@@ -57,6 +57,19 @@
   --sky-glow-y: 118%;
   --star-opacity: 1;
   --moon-opacity: 0.9;
+
+  /* — phase accent: the hour's light, lifted to a usable hue. Set by useSky;
+       the chrome borrows it so the time of day shows in the UI, not just the
+       sky. Defaults to a deep-night periwinkle. — */
+  --phase-accent: rgb(91, 120, 220);
+  --phase-accent-rgb: 91, 120, 220;
+}
+
+/* Registered so the accent *drifts* between minute ticks rather than cutting. */
+@property --phase-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgb(91, 120, 220);
 }
 
 /* Registered so the gradient stops can *transition* between minute ticks —
@@ -356,6 +369,12 @@ h3 {
   text-transform: uppercase;
   color: var(--moon-faint);
   font-weight: 600;
+}
+/* the greeting wears the hour's light — cool at deep night, warm at dusk —
+   so the moment of day reads in the chrome, then drifts as the sky does */
+.eyebrow-phase {
+  color: var(--phase-accent);
+  transition: color 4s linear;
 }
 .muted {
   color: var(--moon-dim);

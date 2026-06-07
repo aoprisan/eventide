@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { NavContext, type Nav, type Route } from './nav.js';
 import { useSky } from './sky/useSky.js';
+import { useSeason } from './sky/useSeason.js';
+import { SeasonLayer } from './sky/SeasonLayer.js';
+import { useEngine } from './engine/EngineContext.js';
+import type { Season } from './sky/sky.js';
 import { HomeScreen } from './screens/HomeScreen.js';
 import { SetupScreen } from './screens/SetupScreen.js';
 import { SessionScreen } from './screens/SessionScreen.js';
@@ -10,7 +14,12 @@ import { InsightsScreen } from './screens/InsightsScreen.js';
 import { SettingsScreen } from './screens/SettingsScreen.js';
 
 export function App() {
-  useSky();
+  const { prefs } = useEngine();
+  // 'auto' (or unset) follows the date; any other value pins the season.
+  const seasonPref = prefs.season as Season | 'auto' | undefined;
+  const seasonOverride = seasonPref && seasonPref !== 'auto' ? seasonPref : undefined;
+  useSky(seasonOverride);
+  const season = useSeason(seasonOverride);
   const [stack, setStack] = useState<Route[]>([{ name: 'home' }]);
 
   const push = useCallback((route: Route) => {
@@ -44,6 +53,7 @@ export function App() {
       <div className="skystars" />
       <div className="skystars skystars-2" />
       <div className="moon" aria-hidden />
+      <SeasonLayer key={season} season={season} />
       <div className="grain" />
       <Screen key={routeKey(route, stack.length)} route={route} />
     </NavContext.Provider>

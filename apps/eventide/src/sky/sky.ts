@@ -36,6 +36,14 @@ export interface SkyState {
   moonOpacity: number;
   phase: string;
   season: Season;
+  /**
+   * The hour's light, lifted to a legible accent — cool periwinkle at deep
+   * night and midday, warm amber through the sunrise/golden/sunset bands. The
+   * chrome borrows it so the *moment of day* shows in the UI, not just the sky.
+   */
+  accent: string;
+  /** Same accent as bare `r, g, b` channels, for `rgba(var(--…), a)` use. */
+  accentRgb: string;
 }
 
 const LAT_DEG = 40; // assumed mid-northern latitude — kept private, never measured
@@ -133,6 +141,18 @@ function tintHex(hex: string, rgb: [number, number, number], w: number): string 
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
+/**
+ * The hour's glow colour, lifted to a vivid-but-soft accent: scale every
+ * channel until the brightest reaches ~210, preserving the hue while pulling a
+ * dim ambient light up to something type and glints can wear. Cool light stays
+ * cool, warm light stays warm — the accent simply tracks the sky's temperature.
+ */
+function accentFromGlow(r: number, g: number, b: number): [number, number, number] {
+  const peak = Math.max(r, g, b, 1);
+  const k = 210 / peak;
+  return [Math.round(r * k), Math.round(g * k), Math.round(b * k)];
+}
+
 function phaseName(t: number, sr: number, ss: number): string {
   if (t < sr - 0.4 || t >= ss + 1.7) return 'night';
   if (t < sr) return 'dawn';
@@ -144,8 +164,12 @@ function phaseName(t: number, sr: number, ss: number): string {
   return 'dusk';
 }
 
-/** The full sky for a given moment. Pure — same instant in, same sky out. */
-export function skyAt(d: Date = new Date()): SkyState {
+/**
+ * The full sky for a given moment. Pure — same instant in, same sky out.
+ * Pass `seasonOverride` to pin the seasonal tint (and the graphics layer that
+ * reads it) to a chosen season instead of the one derived from the date.
+ */
+export function skyAt(d: Date = new Date(), seasonOverride?: Season): SkyState {
   const t = d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600;
   const { sunrise: sr, sunset: ss } = sunTimes(d);
   const kf = keyframes(sr, ss);
@@ -172,10 +196,11 @@ export function skyAt(d: Date = new Date()): SkyState {
     star: lerp(a.pal.star, b.pal.star, f),
   };
 
-  const season = seasonOf(d);
+  const season = seasonOverride ?? seasonOf(d);
   const tint = SEASON_TINT[season];
   const star = Math.max(0, Math.min(1, pal.star + tint.starBoost * pal.star));
   const [gr, gg, gb, ga] = pal.glow;
+  const [ar, ag, ab] = accentFromGlow(gr, gg, gb);
 
   return {
     top: tintHex(pal.top, tint.rgb, tint.w),
@@ -188,5 +213,7 @@ export function skyAt(d: Date = new Date()): SkyState {
     moonOpacity: star * 0.9,
     phase: phaseName(t, sr, ss),
     season,
+    accent: `rgb(${ar}, ${ag}, ${ab})`,
+    accentRgb: `${ar}, ${ag}, ${ab}`,
   };
 }

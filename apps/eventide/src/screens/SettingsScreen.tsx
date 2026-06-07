@@ -1,7 +1,10 @@
 import { useRef, useState } from 'react';
 import { useEngine } from '../engine/EngineContext.js';
 import { Segmented, TopBar } from '../components/ui.js';
+import type { Season } from '../sky/sky.js';
 import type { MotionPref } from '@eventide/engine';
+
+type SeasonPref = Season | 'auto';
 
 export function SettingsScreen() {
   const { store, prefs, setPrefs, refresh } = useEngine();
@@ -57,6 +60,25 @@ export function SettingsScreen() {
             { value: 'off', label: 'Full' },
           ]}
         />
+
+        <div className="col gap-sm">
+          <Segmented<SeasonPref>
+            label="Season"
+            value={(prefs.season as SeasonPref) ?? 'auto'}
+            onChange={(v) => setPrefs({ season: v })}
+            options={[
+              { value: 'auto', label: 'Auto' },
+              { value: 'winter', label: 'Winter' },
+              { value: 'spring', label: 'Spring' },
+              { value: 'summer', label: 'Summer' },
+              { value: 'autumn', label: 'Autumn' },
+            ]}
+          />
+          <span className="faint" style={{ fontSize: '0.85rem' }}>
+            Auto follows the calendar — snow in winter, petals in spring,
+            fireflies in summer, falling leaves in autumn.
+          </span>
+        </div>
 
         <SliderRow
           label="Ambient volume"
