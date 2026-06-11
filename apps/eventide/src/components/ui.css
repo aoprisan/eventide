@@ -1,155 +1,230 @@
+/* ============================================================
+   Vesper components — editorial chrome over the ink field
+   ============================================================ */
+
 .topbar {
-  padding: 6px 0 14px;
-  margin: 0 -4px;
+  padding: 6px 0 16px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px 8px 4px;
+  margin-left: -4px;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--bone-faint);
+  transition: color 240ms var(--ease-calm);
+}
+.back-link:hover {
+  color: var(--bone);
 }
 
-.segmented {
+/* — the masthead: the home page's opening spread — */
+.masthead {
+  padding: 14px 0 32px;
+}
+
+/* — choices: a wrapping row of text options; the selected one is underlined
+     in ember. Type marks the choice, not chrome. — */
+.choices {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  column-gap: 22px;
+  row-gap: 2px;
 }
-.seg {
-  flex: 1 1 auto;
-  min-width: 72px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--moon-dim);
-  font-size: 0.95rem;
+.choice {
+  padding: 9px 1px;
+  font-size: 0.98rem;
   font-weight: 500;
-  transition:
-    background 240ms var(--ease-calm),
-    color 240ms var(--ease-calm),
-    border-color 240ms var(--ease-calm);
+  color: var(--bone-faint);
+  border-bottom: 1px solid transparent;
+  transition: color 240ms var(--ease-calm), border-color 240ms var(--ease-calm);
 }
-.seg-on {
-  background: linear-gradient(135deg, rgba(121, 214, 205, 0.2), rgba(58, 154, 147, 0.12));
-  border-color: rgba(121, 214, 205, 0.5);
-  color: var(--moon);
+.choice:hover {
+  color: var(--bone-dim);
+}
+.choice-on {
+  color: var(--bone);
+  border-bottom-color: var(--ember);
 }
 
-/* — Home tiles — */
-.tile {
-  position: relative;
+/* — passages: the two doorway blocks (Tonight / Morning) on home. A flat
+     plate with a thin rim of its hour's light along the top edge. — */
+.passage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  padding: 24px 24px 26px;
+  background: var(--ink-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 2px 0 var(--ember);
+  transition:
+    transform 240ms var(--ease-calm),
+    border-color 260ms var(--ease-calm),
+    background 260ms var(--ease-calm);
+}
+.passage:hover {
+  border-color: var(--line-strong);
+  background: var(--ink-2);
+}
+.passage:active {
+  transform: scale(0.985);
+}
+.passage-body {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 22px;
-  border-radius: var(--radius-lg);
-  text-align: left;
-  overflow: hidden;
-  min-height: 116px;
-  background: linear-gradient(158deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  /* a hairline of light along the top edge gives the glass a lit rim and reads
-     as depth rather than a flat panel */
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transition:
-    transform 260ms var(--ease-calm),
-    border-color 260ms var(--ease-calm),
-    box-shadow 260ms var(--ease-calm);
+  gap: 7px;
+  flex: 1;
 }
-.tile:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 16px 36px -22px rgba(0, 0, 0, 0.7);
+.passage-eyebrow {
+  color: var(--ember);
 }
-.tile:active {
-  transform: scale(0.98);
-}
-.tile-name {
+.passage-title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 380;
+  font-weight: 420;
+  font-size: 1.8rem;
+  line-height: 1.1;
 }
-.tile-tag {
-  color: var(--moon-faint);
-  font-size: 0.88rem;
-  line-height: 1.35;
+.passage-sub {
+  color: var(--bone-dim);
+  font-size: 0.95rem;
+  max-width: 340px;
 }
-.tile-glyph {
-  position: absolute;
-  right: -14px;
-  bottom: -16px;
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  opacity: 0.7;
-  filter: blur(0.5px);
-  transition: transform 400ms var(--ease-calm), opacity 400ms var(--ease-calm);
+.passage-arrow {
+  color: var(--bone-faint);
+  flex-shrink: 0;
+  transition: transform 300ms var(--ease-calm), color 300ms var(--ease-calm);
 }
-.tile:hover .tile-glyph {
-  transform: scale(1.1) translate(-4px, -4px);
-  opacity: 0.92;
+.passage:hover .passage-arrow {
+  transform: translateX(4px);
+  color: var(--bone);
 }
-/* a glowing core with a clean falloff — a small moon/orb/ember, not a smudge */
-.glyph-orb {
-  background: radial-gradient(circle at 42% 38%, rgba(168, 240, 232, 0.9), rgba(58, 154, 147, 0.32) 42%, transparent 70%);
+/* the morning doorway wears first light instead of ember */
+.passage-morning {
+  box-shadow: inset 0 2px 0 #ecbd86;
 }
-.glyph-flame {
-  background: radial-gradient(circle at 50% 56%, rgba(247, 214, 160, 0.92), rgba(215, 154, 85, 0.34) 42%, transparent 68%);
-}
-.glyph-silent {
-  background: radial-gradient(circle at 48% 42%, rgba(198, 206, 236, 0.78), rgba(120, 128, 168, 0.26) 46%, transparent 70%);
+.passage-morning .passage-eyebrow {
+  color: #ecbd86;
 }
 
-.tile-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+/* — the index: practices as entries in a table of contents — */
+.index {
+  display: flex;
+  flex-direction: column;
+}
+.index-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 2px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  transition: background 240ms var(--ease-calm);
+}
+button.index-row:hover {
+  background: rgba(237, 229, 216, 0.03);
+}
+.index-row-static {
+  cursor: default;
+}
+.index-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--bone-faint);
+  font-variant-numeric: tabular-nums;
+  width: 2ch;
+  flex-shrink: 0;
+}
+.index-name {
+  font-family: var(--font-display);
+  font-weight: 420;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+.index-tag {
+  color: var(--bone-faint);
+  font-size: 0.86rem;
+  margin-top: 2px;
+}
+.index-go {
+  color: var(--bone-faint);
+  flex-shrink: 0;
+  transition: transform 300ms var(--ease-calm), color 300ms var(--ease-calm);
+}
+button.index-row:hover .index-go {
+  transform: translateX(4px);
+  color: var(--bone);
 }
 
-/* — Tonight hero — */
-.tonight-hero {
-  position: relative;
-  padding: 30px 26px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  /* a wash of the hour's own light in the upper-left, the steady candle-amber
-     in the upper-right: the hero warms and cools with the day while keeping
-     its one constant warm note */
-  background:
-    radial-gradient(120% 120% at 12% 0%, rgba(var(--phase-accent-rgb), 0.16), transparent 58%),
-    radial-gradient(120% 120% at 80% 0%, rgba(236, 189, 126, 0.16), transparent 55%),
-    linear-gradient(155deg, rgba(36, 48, 86, 0.6), rgba(20, 59, 64, 0.45));
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* — footer text links — */
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 30px;
 }
-.tonight-hero .moon-badge {
-  position: absolute;
-  top: 22px;
-  right: 24px;
-  color: var(--amber);
-  opacity: 0.85;
+.link-btn {
+  padding: 10px 6px;
+  font-size: 0.76rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--bone-faint);
+  transition: color 240ms var(--ease-calm);
 }
-
-/* — Morning hero: the same shape, warmed toward sunrise — */
-.tonight-hero.hero-morning {
-  background:
-    radial-gradient(120% 120% at 12% 0%, rgba(255, 198, 142, 0.22), transparent 58%),
-    radial-gradient(120% 120% at 82% 0%, rgba(255, 162, 120, 0.18), transparent 55%),
-    linear-gradient(155deg, rgba(92, 66, 58, 0.55), rgba(120, 84, 58, 0.42));
+.link-btn:hover {
+  color: var(--bone);
 }
-.tonight-hero.hero-morning .moon-badge {
-  color: #ffd6a3;
-  opacity: 0.95;
+.footer-dot {
+  color: var(--bone-faint);
 }
 
-/* — Session running view — */
+/* — setup — */
+.setup-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.2rem;
+  line-height: 1.08;
+  margin-top: 10px;
+  letter-spacing: -0.01em;
+}
+
+/* — session running view — */
+.session-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 40;
+  background: rgba(237, 229, 216, 0.07);
+}
+.session-progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--ember-deep), var(--ember));
+  transition: width 200ms linear;
+}
 .session-stage {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 36px;
+  gap: 38px;
   text-align: center;
 }
 .cue {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 360;
+  font-weight: 400;
   font-size: 2rem;
   letter-spacing: 0.01em;
   min-height: 1.4em;
@@ -157,234 +232,167 @@
 }
 .countdown {
   font-variant-numeric: tabular-nums;
-  font-size: 1.05rem;
-  letter-spacing: 0.08em;
-  color: var(--moon-faint);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: var(--bone-faint);
 }
 .session-controls {
   display: flex;
-  gap: 16px;
   align-items: center;
   justify-content: center;
-  padding-bottom: 6px;
+  padding-bottom: 8px;
 }
-/* During a practice the visual is the focal point, so the transport control
-   recedes to quiet glass with only a warm-tinted glyph — present, not loud. */
-.control-big {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(236, 189, 126, 0.28);
-  color: var(--amber);
-  backdrop-filter: blur(8px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 10px 34px -18px rgba(0, 0, 0, 0.7);
-  transition:
-    transform 220ms var(--ease-calm),
-    background 260ms var(--ease-calm),
-    border-color 260ms var(--ease-calm);
-}
-.control-big:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(236, 189, 126, 0.45);
-}
-.control-big:active {
-  transform: scale(0.95);
-}
-
-/* progress arc track */
-.progress-line {
-  width: min(72vw, 320px);
-  height: 2px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.progress-line > span {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--teal-deep), var(--teal));
-  transition: width 200ms linear;
-}
-
-/* — stat cards — */
-.stat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-.stat {
-  padding: 20px;
-  border-radius: var(--radius);
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 2.6rem;
-  font-weight: 360;
-  line-height: 1;
-  color: var(--moon);
-}
-.stat-num .unit {
-  font-size: 1rem;
-  color: var(--moon-faint);
-  margin-left: 4px;
-}
-.stat-label {
-  margin-top: 8px;
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  color: var(--moon-faint);
-}
-
-/* — Insights hero: the streak, featured, with a ribbon of recent nights — */
-.insight-hero {
-  position: relative;
-  padding: 26px 26px 24px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background:
-    radial-gradient(130% 130% at 12% 0%, rgba(121, 214, 205, 0.15), transparent 55%),
-    radial-gradient(120% 120% at 92% 8%, rgba(236, 189, 126, 0.1), transparent 55%),
-    linear-gradient(160deg, rgba(36, 48, 86, 0.5), rgba(20, 59, 64, 0.32));
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.streak-num {
-  font-family: var(--font-display);
-  font-weight: 330;
-  font-size: clamp(3.4rem, 16vw, 4.4rem);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  color: var(--moon);
-}
-.streak-num .unit {
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: var(--amber);
-  margin-left: 10px;
-  letter-spacing: 0.01em;
-}
-
-/* the last N nights as a calm ribbon — lit on the days a session happened.
-   A direct picture of "insights computed from sessions you actually did." */
-.nights-ribbon {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 22px;
-}
-.night-dot {
-  flex: 1;
-  height: 10px;
+/* during a practice the visual is the focal point; the transport is a quiet
+   outlined word, present but never loud */
+.control-pill {
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  transition: background var(--slow) var(--ease-calm), box-shadow var(--slow) var(--ease-calm);
-}
-.night-dot.lit {
-  background: linear-gradient(90deg, var(--teal-deep), var(--teal));
-  box-shadow: 0 0 14px -3px rgba(121, 214, 205, 0.65);
-}
-.night-dot.today {
-  outline: 1px solid rgba(236, 189, 126, 0.55);
-  outline-offset: 2px;
-}
-.ribbon-caption {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 12px;
-  font-size: 0.74rem;
-  letter-spacing: 0.06em;
-  color: var(--moon-faint);
+  padding: 12px 26px;
+  font-size: 0.95rem;
+  color: var(--bone-dim);
 }
 
-/* secondary stats, quieter than the hero — a single thin strip */
-.mini-stats {
-  display: flex;
-  margin-top: 18px;
-}
-.mini-stat {
-  flex: 1;
-  padding: 4px 2px;
-}
-.mini-stat + .mini-stat {
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  padding-left: 18px;
-}
-.mini-num {
-  font-family: var(--font-display);
-  font-weight: 340;
-  font-size: 1.9rem;
-  line-height: 1;
-  color: var(--moon);
-}
-.mini-num .unit {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  color: var(--moon-faint);
-  margin-left: 4px;
-}
-.mini-label {
-  margin-top: 7px;
-  font-size: 0.76rem;
-  letter-spacing: 0.04em;
-  color: var(--moon-faint);
-}
-
-/* — list rows (rituals, history) — */
-.list-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  border-radius: var(--radius);
-}
-.step-chips {
+/* — ritual step tags — */
+.step-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-.chip {
+.step-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.82rem;
-  color: var(--moon-dim);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--ink-2);
+  font-size: 0.84rem;
+  color: var(--bone-dim);
 }
-
-.section-title {
+.step-tag-num {
   font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 360;
+  font-style: italic;
+  color: var(--ember);
+  font-size: 0.8rem;
 }
 
+/* — insights: the featured streak as an editorial stat block — */
+.stat-feature {
+  display: flex;
+  flex-direction: column;
+}
+.streak-num {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: clamp(3.6rem, 17vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+  margin-top: 14px;
+}
+.streak-num .unit {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: var(--ember);
+  margin-left: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* the last fourteen nights as a tally of thin strokes — lit where a session
+   happened, tonight's stroke standing taller */
+.tally {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 26px;
+  padding: 0 1px;
+}
+.tally-tick {
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  background: rgba(237, 229, 216, 0.12);
+  transition: background var(--slow) var(--ease-calm), height var(--slow) var(--ease-calm);
+}
+.tally-tick.lit {
+  background: var(--ember);
+}
+.tally-tick.today {
+  height: 24px;
+}
+.tally-tick.today:not(.lit) {
+  background: rgba(237, 229, 216, 0.3);
+}
+.tally-caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--bone-faint);
+}
+
+/* secondary stats: one ruled strip */
+.mini-stats {
+  display: flex;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.mini-stat {
+  flex: 1;
+  padding: 2px;
+}
+.mini-stat + .mini-stat {
+  border-left: 1px solid var(--line);
+  padding-left: 18px;
+}
+.mini-num {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--bone);
+}
+.mini-num .unit {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--bone-faint);
+  margin-left: 4px;
+}
+.mini-label {
+  margin-top: 7px;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone-faint);
+}
+
+/* — builder controls — */
 .builder-select {
   flex: 1;
   font-family: inherit;
   font-size: 0.95rem;
-  color: var(--moon);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  color: var(--bone);
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   padding: 11px 12px;
   appearance: none;
 }
 .builder-select option {
-  background: var(--night-2);
-  color: var(--moon);
+  background: var(--ink-2);
+  color: var(--bone);
 }
 
+/* — settings controls — */
 .slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 4px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.14);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line-strong);
   outline: none;
 }
 .slider::-webkit-slider-thumb {
@@ -393,42 +401,45 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--teal), var(--teal-deep));
-  box-shadow: 0 4px 14px -4px rgba(121, 214, 205, 0.7);
+  background: var(--ember);
+  border: 4px solid var(--ink-0);
   cursor: pointer;
 }
 .slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 14px;
+  height: 14px;
   border: none;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--ember);
   cursor: pointer;
 }
 
 .toggle {
   position: relative;
-  width: 50px;
-  height: 30px;
+  width: 48px;
+  height: 28px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  transition: background 240ms var(--ease-calm);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  transition: background 240ms var(--ease-calm), border-color 240ms var(--ease-calm);
   flex-shrink: 0;
 }
 .toggle.on {
-  background: var(--teal-deep);
+  background: var(--ember-deep);
+  border-color: var(--ember-deep);
 }
 .toggle::after {
   content: '';
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 24px;
-  height: 24px;
+  top: 4px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  background: #fff;
-  transition: transform 240ms var(--ease-calm);
+  background: var(--bone-dim);
+  transition: transform 240ms var(--ease-calm), background 240ms var(--ease-calm);
 }
 .toggle.on::after {
   transform: translateX(20px);
+  background: #fff7ec;
 }

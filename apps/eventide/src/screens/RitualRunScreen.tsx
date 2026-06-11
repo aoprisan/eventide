@@ -111,7 +111,7 @@ function Interlude({ next }: { next: string }) {
   return (
     <div className="shell center" style={{ textAlign: 'center' }}>
       <div className="col center gap-sm view-enter">
-        <span className="eyebrow">Next</span>
+        <span className="overline">Next</span>
         <h2 className="serif-italic" style={{ fontSize: '2.2rem' }}>
           {next}
         </h2>
@@ -138,7 +138,7 @@ function ChainComplete({
           {body}
         </p>
       </div>
-      <button className="btn btn-ghost btn-block" onClick={onHome}>
+      <button className="btn btn-quiet btn-block" onClick={onHome}>
         Done
       </button>
     </div>

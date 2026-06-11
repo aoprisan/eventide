@@ -39,6 +39,16 @@ npm run build          # build engine + app (PWA, offline)
 npm run preview        # serve the production build locally
 ```
 
+## Design — "Vesper"
+
+The UI is an editorial, print-like night design: warm ink surfaces, hairline rules,
+Newsreader serif headings over Albert Sans, and a single ember accent. Instead of a
+literal sky, one abstract **horizon of light** low on the page follows the real hour —
+violet in deep night, rose at first light, pale straw through the day, ember at dusk
+(`src/horizon/useHorizon.ts`). Each practice has its own visual on the shared session
+shell: a moonstone breath disc, a slender taper for the candle gaze, and a distant lamp
+on a still horizon for meditation.
+
 ## Architecture notes
 
 The one idea that governs everything: every practice is the *same primitive* — a guided

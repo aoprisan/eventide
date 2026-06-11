@@ -22,6 +22,7 @@ export function Icon({ name, size = 22 }: { name: IconName; size?: number }) {
 
 export type IconName =
   | 'back'
+  | 'arrow'
   | 'close'
   | 'moon'
   | 'sun'
@@ -36,6 +37,7 @@ export type IconName =
 
 const ICONS: Record<IconName, ReactNode> = {
   back: <path d="M15 18l-6-6 6-6" />,
+  arrow: <path d="M5 12h14m-6-6l6 6-6 6" />,
   close: <path d="M18 6L6 18M6 6l12 12" />,
   moon: <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" />,
   sun: (
@@ -59,24 +61,25 @@ const ICONS: Record<IconName, ReactNode> = {
   sparkle: <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" />,
 };
 
-/** Top bar with a back affordance and an optional trailing slot. */
+/** Top bar: a quiet text back-link plus an optional trailing slot. */
 export function TopBar({ trailing }: { trailing?: ReactNode }) {
   const nav = useNav();
   return (
     <div className="topbar row between">
       <button
-        className="icon-btn"
+        className="back-link"
         onClick={() => (nav.canGoBack ? nav.back() : nav.home())}
         aria-label="Back"
       >
-        <Icon name="back" />
+        <Icon name="back" size={16} /> Back
       </button>
       <div className="row gap-sm">{trailing}</div>
     </div>
   );
 }
 
-/** A horizontal segmented choice (durations, patterns, ambients). */
+/** A wrapping row of text choices (durations, rhythms, sounds). The selected
+ *  one carries an ember underline — type, not chrome, marks the choice. */
 export function Segmented<T>({
   options,
   value,
@@ -90,12 +93,16 @@ export function Segmented<T>({
 }) {
   return (
     <div className="col gap-sm">
-      {label && <span className="eyebrow">{label}</span>}
-      <div className="segmented" role="group">
+      {label && (
+        <div className="rule-head">
+          <span className="overline">{label}</span>
+        </div>
+      )}
+      <div className="choices" role="group">
         {options.map((o) => (
           <button
             key={String(o.value)}
-            className={`seg ${o.value === value ? 'seg-on' : ''}`}
+            className={`choice ${o.value === value ? 'choice-on' : ''}`}
             onClick={() => onChange(o.value)}
           >
             {o.label}

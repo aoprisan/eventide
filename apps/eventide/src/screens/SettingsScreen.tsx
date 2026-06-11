@@ -2,10 +2,7 @@ import { useRef, useState } from 'react';
 import { useEngine } from '../engine/EngineContext.js';
 import { usePwa } from '../pwa/PwaContext.js';
 import { Segmented, TopBar } from '../components/ui.js';
-import type { Season } from '../sky/sky.js';
 import type { MotionPref } from '@eventide/engine';
-
-type SeasonPref = Season | 'auto';
 
 export function SettingsScreen() {
   const { store, prefs, setPrefs, refresh } = useEngine();
@@ -38,12 +35,14 @@ export function SettingsScreen() {
   return (
     <div className="shell view-enter">
       <TopBar />
-      <header className="col" style={{ marginBottom: 26 }}>
-        <span className="eyebrow">Settings</span>
-        <h1 className="display">Quiet & yours</h1>
+      <header className="col" style={{ marginBottom: 28 }}>
+        <span className="overline overline-hour">Settings</span>
+        <h1 className="display" style={{ marginTop: 8 }}>
+          Quiet &amp; yours
+        </h1>
       </header>
 
-      <div className="col" style={{ gap: 22 }}>
+      <div className="col" style={{ gap: 24 }}>
         <ToggleRow
           label="Haptics"
           hint="Gentle pulses on phase changes"
@@ -62,25 +61,6 @@ export function SettingsScreen() {
           ]}
         />
 
-        <div className="col gap-sm">
-          <Segmented<SeasonPref>
-            label="Season"
-            value={(prefs.season as SeasonPref) ?? 'auto'}
-            onChange={(v) => setPrefs({ season: v })}
-            options={[
-              { value: 'auto', label: 'Auto' },
-              { value: 'winter', label: 'Winter' },
-              { value: 'spring', label: 'Spring' },
-              { value: 'summer', label: 'Summer' },
-              { value: 'autumn', label: 'Autumn' },
-            ]}
-          />
-          <span className="faint" style={{ fontSize: '0.85rem' }}>
-            Auto follows the calendar — snow in winter, petals in spring,
-            fireflies in summer, falling leaves in autumn.
-          </span>
-        </div>
-
         <SliderRow
           label="Ambient volume"
           value={prefs.ambientVolume ?? 0.4}
@@ -92,19 +72,19 @@ export function SettingsScreen() {
           onChange={(v) => setPrefs({ toneVolume: v })}
         />
 
-        <div className="divider" />
-
         <div className="col gap-sm">
-          <span className="eyebrow">Your data</span>
+          <div className="rule-head">
+            <span className="overline">Your data</span>
+          </div>
           <p className="faint" style={{ fontSize: '0.9rem' }}>
             Everything lives on this device only. No account, no servers. Take it with
             you anytime.
           </p>
           <div className="row gap-sm" style={{ marginTop: 6 }}>
-            <button className="btn btn-ghost grow" onClick={exportData}>
+            <button className="btn btn-quiet grow" onClick={exportData}>
               Export
             </button>
-            <button className="btn btn-ghost grow" onClick={() => fileRef.current?.click()}>
+            <button className="btn btn-quiet grow" onClick={() => fileRef.current?.click()}>
               Import
             </button>
           </div>
@@ -125,8 +105,6 @@ export function SettingsScreen() {
             </p>
           )}
         </div>
-
-        <div className="divider" />
 
         <AboutBuild />
 
@@ -151,7 +129,9 @@ function AboutBuild() {
 
   return (
     <div className="col gap-sm">
-      <span className="eyebrow">About this build</span>
+      <div className="rule-head">
+        <span className="overline">About this build</span>
+      </div>
       <div className="row between">
         <span className="faint" style={{ fontSize: '0.9rem' }}>
           Built
@@ -164,7 +144,7 @@ function AboutBuild() {
       {needRefresh ? (
         <>
           <button className="btn btn-primary btn-block" onClick={applyUpdate} style={{ marginTop: 6 }}>
-            Update & restart
+            Update &amp; restart
           </button>
           <span className="faint text-center" style={{ fontSize: '0.85rem' }}>
             A newer version is ready.
@@ -173,7 +153,7 @@ function AboutBuild() {
       ) : (
         <>
           <button
-            className="btn btn-ghost btn-block"
+            className="btn btn-quiet btn-block"
             onClick={() => void onCheck()}
             disabled={checking}
             style={{ marginTop: 6 }}

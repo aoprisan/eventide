@@ -24,8 +24,8 @@ export default defineConfig({
         short_name: 'Eventide',
         description:
           'A calm, private place to wind down at the close of the day — and to steady yourself in a hard moment.',
-        theme_color: '#05070f',
-        background_color: '#05070f',
+        theme_color: '#0d0b09',
+        background_color: '#0d0b09',
         display: 'standalone',
         orientation: 'portrait',
         categories: ['health', 'lifestyle'],
