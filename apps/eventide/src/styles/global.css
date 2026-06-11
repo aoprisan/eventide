@@ -1,37 +1,35 @@
 /* ============================================================
-   Eventide — "Nocturne" design system
-   Twilight folding into night: deep indigo → teal-black, one warm
-   candle-amber accent, a cool moonlit-teal breath glow. Calm is the product:
-   slow eased motion, soft type, dim atmosphere, generous space.
+   Eventide — "Vesper" design system
+   Lamplight on paper, not a painted sky. Warm ink surfaces, hairline
+   rules, editorial serif headings, and a single abstract horizon of
+   light low on the page whose temperature follows the real hour.
+   Calm is the product: typography leads, ornament stays out of the way.
    ============================================================ */
 
 :root {
-  /* — night palette — */
-  --night-0: #05070f; /* near-black indigo, page base */
-  --night-1: #0a1020;
-  --night-2: #111a30;
-  --night-3: #1a2440;
-  --veil: rgba(8, 12, 24, 0.6);
+  /* — ink: warm smoked blacks — */
+  --ink-0: #0d0b09; /* page */
+  --ink-1: #141110; /* panel */
+  --ink-2: #1d1815; /* raised */
 
-  /* — atmosphere accents (used in gradient mesh) — */
-  --dusk-indigo: #243056;
-  --dusk-teal: #143b40;
-  --dusk-plum: #2a2348;
+  /* — bone: warm paper-light text — */
+  --bone: #ede5d8;
+  --bone-dim: #b5aa99;
+  --bone-faint: #7e7466;
 
-  /* — light — */
-  --moon: #eef0fb; /* primary text, moonlight */
-  --moon-dim: #aab2d0; /* secondary text */
-  --moon-faint: #6b7398; /* tertiary / hints */
+  /* — rules — */
+  --line: rgba(237, 229, 216, 0.13);
+  --line-strong: rgba(237, 229, 216, 0.24);
 
-  /* — accents — */
-  --amber: #ecbd7e; /* candle / warmth — the single warm note */
-  --amber-deep: #d79a55;
-  --teal: #79d6cd; /* breath orb glow, cool */
-  --teal-deep: #3a9a93;
+  /* — accents: one ember, one cool moonstone — */
+  --ember: #e98e5e;
+  --ember-deep: #b9602f;
+  --moonstone: #a9c0cf;
+  --moonstone-deep: #5f7c8d;
 
   /* — type — */
-  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
-  --font-body: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Albert Sans Variable', ui-sans-serif, system-ui, sans-serif;
 
   /* — motion — */
   --ease-calm: cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,59 +38,42 @@
   --slower: 1200ms;
 
   /* — geometry — */
-  --radius: 20px;
-  --radius-lg: 28px;
+  --radius: 12px;
+  --radius-lg: 18px;
   --maxw: 540px;
   --gap: 18px;
 
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 
-  /* — living sky (set by useSky from the real time of day / season) — */
-  --sky-top: #05070f;
-  --sky-mid: #090f1e;
-  --sky-bottom: #0c1326;
-  --sky-glow: rgba(38, 50, 92, 0.3);
-  --sky-glow-x: 50%;
-  --sky-glow-y: 118%;
-  --star-opacity: 1;
-  --moon-opacity: 0.9;
+  /* — the horizon: a band of light low on the page, set by useHorizon
+       from the real hour. Core is the bright heart, haze the wide wash,
+       strength the overall presence. Defaults to deep night. — */
+  --horizon-core: rgba(122, 110, 162, 0.34);
+  --horizon-haze: rgba(70, 72, 110, 0.18);
+  --horizon-strength: 0.8;
 
-  /* — phase accent: the hour's light, lifted to a usable hue. Set by useSky;
-       the chrome borrows it so the time of day shows in the UI, not just the
-       sky. Defaults to a deep-night periwinkle. — */
-  --phase-accent: rgb(91, 120, 220);
-  --phase-accent-rgb: 91, 120, 220;
+  /* — the hour's accent, lifted to a text-usable tone. The chrome borrows
+       it so the time of day reads in the page, not just the horizon. — */
+  --hour-accent: rgb(158, 150, 200);
 }
 
-/* Registered so the accent *drifts* between minute ticks rather than cutting. */
-@property --phase-accent {
+/* Registered so the horizon *drifts* between minute ticks rather than
+   cutting — each update becomes a slow change of light. */
+@property --horizon-core {
   syntax: '<color>';
   inherits: true;
-  initial-value: rgb(91, 120, 220);
+  initial-value: rgba(122, 110, 162, 0.34);
 }
-
-/* Registered so the gradient stops can *transition* between minute ticks —
-   each update becomes a slow drift of the sky rather than a hard cut. */
-@property --sky-top {
+@property --horizon-haze {
   syntax: '<color>';
   inherits: true;
-  initial-value: #05070f;
+  initial-value: rgba(70, 72, 110, 0.18);
 }
-@property --sky-mid {
+@property --hour-accent {
   syntax: '<color>';
   inherits: true;
-  initial-value: #090f1e;
-}
-@property --sky-bottom {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #0c1326;
-}
-@property --sky-glow {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: rgba(38, 50, 92, 0.3);
+  initial-value: rgb(158, 150, 200);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -120,8 +101,8 @@ body,
 
 body {
   font-family: var(--font-body);
-  color: var(--moon);
-  background: var(--night-0);
+  color: var(--bone);
+  background: var(--ink-0);
   font-size: 17px;
   line-height: 1.55;
   font-weight: 400;
@@ -132,146 +113,42 @@ body {
   overscroll-behavior: none;
 }
 
-/* — the living sky: a vertical wash plus a travelling sun/ambient glow, all
-     driven by CSS vars that useSky sets from the real time of day & season — */
-.sky {
+/* ============================================================
+   The field — the page behind everything.
+   One quiet horizon of light low on the screen; nothing else.
+   ============================================================ */
+.field {
   position: fixed;
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(
-      78% 56% at var(--sky-glow-x) var(--sky-glow-y),
-      var(--sky-glow) 0%,
-      transparent 62%
-    ),
-    linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 50%, var(--sky-bottom) 100%);
-  /* a slow, almost-imperceptible drift, plus soft colour transitions per tick */
-  animation: skyDrift 90s var(--ease-calm) infinite alternate;
+    radial-gradient(120% 46% at 50% 104%, var(--horizon-core) 0%, transparent 64%),
+    radial-gradient(160% 72% at 50% 112%, var(--horizon-haze) 0%, transparent 70%),
+    linear-gradient(180deg, var(--ink-0) 0%, #0f0d0b 72%, #121009 100%);
+  opacity: var(--horizon-strength);
   transition:
-    --sky-top 4s linear,
-    --sky-mid 4s linear,
-    --sky-bottom 4s linear,
-    --sky-glow 4s linear;
+    --horizon-core 4s linear,
+    --horizon-haze 4s linear,
+    opacity 4s linear;
 }
-@keyframes skyDrift {
-  from {
-    transform: scale(1.06) translate3d(-1%, -1%, 0);
-  }
-  to {
-    transform: scale(1.12) translate3d(1.5%, 1%, 0);
-  }
-}
-
-/* — the starfield: two layers, twinkling out of phase, fading in toward night.
-     The whole-layer opacity (day↔night) is separate from the per-layer twinkle,
-     so stars dim away at dawn without freezing the twinkle. — */
-.skystars {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: var(--star-opacity);
-  transition: opacity 4s linear;
-}
-.skystars::before {
+/* the horizon line itself — a hairline of light where ground meets glow */
+.field::after {
   content: '';
   position: absolute;
-  inset: -6%;
-  background-repeat: no-repeat;
-  background-image:
-    radial-gradient(1.6px 1.6px at 12% 16%, rgba(255, 255, 255, 0.95), transparent 60%),
-    radial-gradient(1.4px 1.4px at 26% 9%, rgba(231, 238, 255, 0.8), transparent 60%),
-    radial-gradient(2px 2px at 41% 22%, rgba(255, 252, 240, 0.95), transparent 60%),
-    radial-gradient(1.2px 1.2px at 57% 12%, rgba(214, 226, 255, 0.7), transparent 60%),
-    radial-gradient(1.8px 1.8px at 73% 19%, rgba(255, 255, 255, 0.9), transparent 60%),
-    radial-gradient(1.3px 1.3px at 88% 11%, rgba(231, 238, 255, 0.75), transparent 60%),
-    radial-gradient(1.5px 1.5px at 8% 38%, rgba(255, 255, 255, 0.8), transparent 60%),
-    radial-gradient(1.2px 1.2px at 33% 44%, rgba(214, 226, 255, 0.65), transparent 60%),
-    radial-gradient(2.2px 2.2px at 64% 37%, rgba(255, 250, 235, 0.95), transparent 60%),
-    radial-gradient(1.4px 1.4px at 81% 47%, rgba(255, 255, 255, 0.8), transparent 60%),
-    radial-gradient(1.2px 1.2px at 18% 61%, rgba(231, 238, 255, 0.7), transparent 60%),
-    radial-gradient(1.6px 1.6px at 47% 67%, rgba(255, 255, 255, 0.85), transparent 60%),
-    radial-gradient(1.3px 1.3px at 92% 64%, rgba(214, 226, 255, 0.65), transparent 60%);
-  animation: twinkleA 7s var(--ease-breath) infinite, starDrift 150s linear infinite alternate;
-}
-.skystars-2 {
-  opacity: var(--star-opacity);
-}
-.skystars-2::before {
-  inset: -6%;
-  background-image:
-    radial-gradient(1.1px 1.1px at 20% 27%, rgba(255, 255, 255, 0.6), transparent 60%),
-    radial-gradient(1px 1px at 38% 33%, rgba(214, 226, 255, 0.5), transparent 60%),
-    radial-gradient(1.3px 1.3px at 53% 24%, rgba(255, 255, 255, 0.65), transparent 60%),
-    radial-gradient(1px 1px at 69% 30%, rgba(231, 238, 255, 0.5), transparent 60%),
-    radial-gradient(1.2px 1.2px at 84% 35%, rgba(255, 255, 255, 0.6), transparent 60%),
-    radial-gradient(1px 1px at 14% 52%, rgba(214, 226, 255, 0.5), transparent 60%),
-    radial-gradient(1.4px 1.4px at 30% 58%, rgba(255, 255, 255, 0.65), transparent 60%),
-    radial-gradient(1px 1px at 59% 54%, rgba(231, 238, 255, 0.5), transparent 60%),
-    radial-gradient(1.2px 1.2px at 76% 60%, rgba(255, 255, 255, 0.6), transparent 60%),
-    radial-gradient(1px 1px at 25% 74%, rgba(214, 226, 255, 0.5), transparent 60%),
-    radial-gradient(1.3px 1.3px at 50% 80%, rgba(255, 255, 255, 0.6), transparent 60%),
-    radial-gradient(1px 1px at 70% 76%, rgba(231, 238, 255, 0.5), transparent 60%);
-  animation: twinkleB 9s var(--ease-breath) infinite 1.4s, starDrift 210s linear infinite alternate-reverse;
-}
-@keyframes twinkleA {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 1; }
-}
-@keyframes twinkleB {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 0.95; }
-}
-@keyframes starDrift {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(1.6%, 1%, 0); }
+  left: 8%;
+  right: 8%;
+  bottom: calc(var(--safe-bottom) + 7%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
 }
 
-/* — the moon: a soft gibbous disc that glows in at night, gone by day.
-     It lives high in the top-right corner — above the heading band — so the
-     serif titles never have to read across its glow, and drifts almost
-     imperceptibly so the sky feels alive rather than pasted-on. — */
-.moon {
-  position: fixed;
-  top: calc(var(--safe-top) + 4.5%);
-  right: 11%;
-  z-index: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: var(--moon-opacity);
-  transition: opacity 4s linear;
-  background: radial-gradient(
-    circle at 38% 36%,
-    #fdfaf3 0%,
-    #efe4c8 50%,
-    #cdbb92 80%,
-    #a99a73 100%
-  );
-  /* a tighter, dimmer halo — distant moonlight, not a lens flare */
-  box-shadow:
-    inset -8px -6px 15px rgba(18, 20, 40, 0.45),
-    0 0 26px 3px rgba(245, 235, 205, 0.2),
-    0 0 58px 9px rgba(236, 189, 126, 0.06);
-  animation: moonFloat 130s var(--ease-calm) infinite alternate;
-}
-@keyframes moonFloat {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-6px, 11px, 0);
-  }
-}
-
-/* — fine grain so flat areas have tooth, never plasticky — */
+/* — fine grain so flat ink has tooth, never plasticky — */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.045;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -286,7 +163,7 @@ body {
   transition: opacity var(--slower) var(--ease-calm);
 }
 
-/* — the morning counterpart: a warm dawn light rising from below that lifts
+/* — the morning counterpart: warm light rising from the horizon that lifts
      the screen as the chain progresses, then clears as the day begins — */
 .wake-veil {
   position: fixed;
@@ -295,8 +172,8 @@ body {
   pointer-events: none;
   background: radial-gradient(
     130% 85% at 50% 102%,
-    rgba(255, 216, 170, 0.95),
-    rgba(255, 188, 142, 0.4) 44%,
+    rgba(255, 209, 158, 0.9),
+    rgba(244, 168, 110, 0.36) 44%,
     transparent 72%
   );
   mix-blend-mode: screen;
@@ -318,43 +195,40 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
-  padding: calc(var(--safe-top) + 8px) 22px calc(var(--safe-bottom) + 22px);
+  padding: calc(var(--safe-top) + 10px) 24px calc(var(--safe-bottom) + 24px);
 }
 .shell::-webkit-scrollbar {
   display: none;
 }
-/* Keep every section at its natural height: the shell scrolls when content is
-   tall, rather than flex-shrinking cards and clipping their `overflow: hidden`
-   contents (which silently ate the Tonight hero's subcopy). The `.grow` spacer
-   still expands to push footers down — shrink:0 doesn't stop a flex item from
-   growing. */
+/* Keep sections at natural height; the shell scrolls when content is tall.
+   The .grow spacer still expands to push footers down. */
 .shell > * {
   flex-shrink: 0;
 }
 
 .view-enter {
-  animation: fadeUp var(--slow) var(--ease-calm) both;
+  animation: settle var(--slow) var(--ease-calm) both;
 }
-@keyframes fadeUp {
+@keyframes settle {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-/* staggered reveal for lists of tiles */
+/* staggered reveal for indexes and lists */
 .stagger > * {
-  animation: fadeUp var(--slow) var(--ease-calm) both;
+  animation: settle var(--slow) var(--ease-calm) both;
 }
 .stagger > *:nth-child(1) { animation-delay: 60ms; }
-.stagger > *:nth-child(2) { animation-delay: 140ms; }
-.stagger > *:nth-child(3) { animation-delay: 220ms; }
-.stagger > *:nth-child(4) { animation-delay: 300ms; }
-.stagger > *:nth-child(5) { animation-delay: 380ms; }
-.stagger > *:nth-child(6) { animation-delay: 460ms; }
+.stagger > *:nth-child(2) { animation-delay: 130ms; }
+.stagger > *:nth-child(3) { animation-delay: 200ms; }
+.stagger > *:nth-child(4) { animation-delay: 270ms; }
+.stagger > *:nth-child(5) { animation-delay: 340ms; }
+.stagger > *:nth-child(6) { animation-delay: 410ms; }
 
 /* ============================================================
    Type
@@ -363,41 +237,53 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 380;
+  font-weight: 420;
   font-optical-sizing: auto;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   line-height: 1.12;
 }
 .display {
   font-family: var(--font-display);
-  font-weight: 340;
-  font-size: clamp(2.4rem, 9vw, 3.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-weight: 380;
+  font-size: clamp(2.5rem, 9.5vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
 }
 .serif-italic {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 360;
+  font-weight: 400;
 }
-.eyebrow {
-  font-size: 0.72rem;
-  letter-spacing: 0.32em;
+/* small caps running-head label, used at section rules */
+.overline {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--moon-faint);
+  color: var(--bone-faint);
   font-weight: 600;
 }
-/* the greeting wears the hour's light — cool at deep night, warm at dusk —
-   so the moment of day reads in the chrome, then drifts as the sky does */
-.eyebrow-phase {
-  color: var(--phase-accent);
+/* the greeting wears the hour's light — cool at deep night, ember at dusk */
+.overline-hour {
+  color: var(--hour-accent);
   transition: color 4s linear;
 }
 .muted {
-  color: var(--moon-dim);
+  color: var(--bone-dim);
 }
 .faint {
-  color: var(--moon-faint);
+  color: var(--bone-faint);
+}
+
+/* a section opening: hairline rule with its running head */
+.rule-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.rule-head .overline {
+  flex-shrink: 0;
 }
 
 /* ============================================================
@@ -417,46 +303,45 @@ button {
   justify-content: center;
   gap: 10px;
   padding: 15px 26px;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   transition:
     transform 220ms var(--ease-calm),
     background 320ms var(--ease-calm),
-    box-shadow 320ms var(--ease-calm);
+    border-color 320ms var(--ease-calm),
+    color 320ms var(--ease-calm);
 }
 .btn:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--amber) 0%, var(--amber-deep) 100%);
-  color: #2a1c08;
-  box-shadow: 0 10px 40px -12px rgba(236, 189, 126, 0.55);
+  background: linear-gradient(170deg, var(--ember) 0%, var(--ember-deep) 130%);
+  color: #1c0e05;
+  font-weight: 600;
 }
-.btn-ghost {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--moon);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(6px);
+.btn-primary:hover {
+  background: linear-gradient(170deg, #f09c6f 0%, var(--ember-deep) 130%);
 }
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.09);
+.btn-quiet {
+  background: transparent;
+  color: var(--bone-dim);
+  border: 1px solid var(--line-strong);
+}
+.btn-quiet:hover {
+  color: var(--bone);
+  border-color: rgba(237, 229, 216, 0.4);
 }
 .btn-block {
   width: 100%;
 }
 
-/* a soft glass card */
-.card {
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.055) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* a flat ink plate — the only "card" in the system */
+.plate {
+  background: var(--ink-1);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
 }
 
 .icon-btn {
@@ -466,12 +351,12 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--moon-dim);
-  transition: background 240ms var(--ease-calm), color 240ms var(--ease-calm);
+  color: var(--bone-faint);
+  transition: color 240ms var(--ease-calm), background 240ms var(--ease-calm);
 }
 .icon-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--moon);
+  background: rgba(237, 229, 216, 0.05);
+  color: var(--bone);
 }
 
 .row {
@@ -509,9 +394,10 @@ input[type='text'],
 textarea {
   font-family: inherit;
   font-size: 1rem;
-  color: var(--moon);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--bone);
+  background: var(--ink-1);
+  border: 1px solid var(--line);
+  border-bottom-color: var(--line-strong);
   border-radius: var(--radius);
   padding: 14px 16px;
   width: 100%;
@@ -521,21 +407,16 @@ textarea {
 input[type='text']:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--teal-deep);
-  background: rgba(255, 255, 255, 0.06);
+  border-bottom-color: var(--ember);
+  background: var(--ink-2);
 }
 input::placeholder,
 textarea::placeholder {
-  color: var(--moon-faint);
+  color: var(--bone-faint);
 }
 
 .divider {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.12),
-    transparent
-  );
+  background: var(--line);
   margin: 8px 0;
 }

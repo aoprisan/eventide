@@ -37,9 +37,11 @@ export function RitualListScreen({ kind }: { kind: RitualKind }) {
   return (
     <div className="shell view-enter">
       <TopBar />
-      <header className="col" style={{ marginBottom: 24 }}>
-        <span className="eyebrow">{flow.heroEyebrow}</span>
-        <h1 className="display">{flow.listTitle}</h1>
+      <header className="col" style={{ marginBottom: 26 }}>
+        <span className="overline overline-hour">{flow.heroEyebrow}</span>
+        <h1 className="display" style={{ marginTop: 8 }}>
+          {flow.listTitle}
+        </h1>
         <p className="muted" style={{ marginTop: 10 }}>
           {flow.listIntro}
         </p>
@@ -47,8 +49,8 @@ export function RitualListScreen({ kind }: { kind: RitualKind }) {
 
       <div className="col gap stagger">
         {all.map((ritual) => (
-          <div key={ritual.id} className="card" style={{ padding: 22 }}>
-            <div className="row between" style={{ marginBottom: 14 }}>
+          <div key={ritual.id} className="plate" style={{ padding: 22 }}>
+            <div className="row between" style={{ marginBottom: 12 }}>
               <h2 style={{ fontSize: '1.5rem' }}>{ritual.name}</h2>
               {ritual.id !== flow.defaultRitual.id && (
                 <button className="icon-btn" aria-label="Delete" onClick={() => remove(ritual.id)}>
@@ -56,9 +58,10 @@ export function RitualListScreen({ kind }: { kind: RitualKind }) {
                 </button>
               )}
             </div>
-            <div className="step-chips" style={{ marginBottom: 18 }}>
+            <div className="step-list" style={{ marginBottom: 20 }}>
               {ritual.steps.map((s, i) => (
-                <span key={i} className="chip">
+                <span key={i} className="step-tag">
+                  <span className="step-tag-num">{i + 1}</span>
                   {stepLabel(s)}
                 </span>
               ))}
@@ -81,7 +84,7 @@ export function RitualListScreen({ kind }: { kind: RitualKind }) {
         />
       ) : (
         <button
-          className="btn btn-ghost btn-block"
+          className="btn btn-quiet btn-block"
           style={{ marginTop: 18 }}
           onClick={() => setBuilding(true)}
         >
@@ -116,8 +119,8 @@ function Builder({
   }
 
   return (
-    <div className="card view-enter" style={{ padding: 22, marginTop: 18 }}>
-      <span className="eyebrow">New ritual</span>
+    <div className="plate view-enter" style={{ padding: 22, marginTop: 18 }}>
+      <span className="overline">New ritual</span>
       <input
         type="text"
         value={name}
@@ -158,11 +161,11 @@ function Builder({
           </div>
         ))}
       </div>
-      <button className="btn btn-ghost btn-block" style={{ marginTop: 14 }} onClick={addStep}>
+      <button className="btn btn-quiet btn-block" style={{ marginTop: 14 }} onClick={addStep}>
         <Icon name="plus" size={18} /> Add a step
       </button>
       <div className="row gap-sm" style={{ marginTop: 16 }}>
-        <button className="btn btn-ghost grow" onClick={onCancel}>
+        <button className="btn btn-quiet grow" onClick={onCancel}>
           Cancel
         </button>
         <button

@@ -69,11 +69,18 @@ export function SessionScreen({
 
   return (
     <div className="shell view-enter">
+      {/* the session's progress: a hairline of ember filling along the top edge */}
+      {frame.progress != null && (
+        <div className="session-progress" aria-hidden>
+          <span style={{ width: `${frame.progress * 100}%` }} />
+        </div>
+      )}
+
       <div className="row between" style={{ paddingTop: 6 }}>
         <button className="icon-btn" aria-label="End" onClick={() => end('partial')}>
           <Icon name="close" />
         </button>
-        <span className="eyebrow">{title}</span>
+        <span className="overline">{title}</span>
         <span style={{ width: 44 }} />
       </div>
 
@@ -92,21 +99,15 @@ export function SessionScreen({
           <div className="cue">{frame.cue}</div>
           {frame.remaining != null && <div className="countdown">{clock(frame.remaining)}</div>}
         </div>
-
-        {frame.progress != null && (
-          <div className="progress-line">
-            <span style={{ width: `${frame.progress * 100}%` }} />
-          </div>
-        )}
       </div>
 
       <div className="session-controls">
         <button
-          className="control-big"
-          aria-label={running ? 'Pause' : 'Resume'}
+          className="btn btn-quiet control-pill"
           onClick={() => (running ? pause() : void resume())}
         >
-          <Icon name={running ? 'pause' : 'play'} size={30} />
+          <Icon name={running ? 'pause' : 'play'} size={18} />
+          {running ? 'Pause' : 'Resume'}
         </button>
       </div>
     </div>
@@ -126,7 +127,7 @@ function Completion({
   return (
     <div className="shell view-enter center" style={{ textAlign: 'center' }}>
       <div className="col center gap" style={{ flex: 1, justifyContent: 'center' }}>
-        <span className="eyebrow">{title} complete</span>
+        <span className="overline overline-hour">{title} complete</span>
         <h1 className="display" style={{ maxWidth: 360 }}>
           Well done
         </h1>
@@ -134,7 +135,7 @@ function Completion({
           {mins} quiet minute{mins > 1 ? 's' : ''}. Let the calm stay with you.
         </p>
       </div>
-      <button className="btn btn-ghost btn-block" onClick={onHome}>
+      <button className="btn btn-quiet btn-block" onClick={onHome}>
         Home
       </button>
     </div>

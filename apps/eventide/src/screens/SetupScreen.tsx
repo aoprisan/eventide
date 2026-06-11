@@ -35,14 +35,12 @@ export function SetupScreen({ module }: { module: 'breath' | 'candle' | 'meditat
   return (
     <div className="shell view-enter">
       <TopBar />
-      <header className="col" style={{ marginBottom: 26 }}>
-        <span className="eyebrow">{info.name}</span>
-        <h1 className="section-title" style={{ fontSize: '2.4rem', marginTop: 6 }}>
-          {info.tagline}
-        </h1>
+      <header className="col" style={{ marginBottom: 30 }}>
+        <span className="overline overline-hour">{info.name}</span>
+        <h1 className="setup-title">{info.tagline}</h1>
       </header>
 
-      <div className="col gap" style={{ gap: 24 }}>
+      <div className="col" style={{ gap: 28 }}>
         <Segmented
           label="How long"
           value={duration}
@@ -67,7 +65,9 @@ export function SetupScreen({ module }: { module: 'breath' | 'candle' | 'meditat
         />
 
         <div className="col gap-sm">
-          <span className="eyebrow">Intention — optional</span>
+          <div className="rule-head">
+            <span className="overline">Intention — optional</span>
+          </div>
           <input
             type="text"
             placeholder="What are you here for tonight?"

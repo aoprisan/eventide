@@ -4,7 +4,7 @@ import { computeInsights, type ModuleId, type StoredSession } from '@eventide/en
 import { MODULES } from '../modules.js';
 
 const DAY_MS = 86_400_000;
-const RIBBON_DAYS = 14;
+const TALLY_DAYS = 14;
 
 /** Local-midnight day index for an epoch-ms timestamp (mirrors the engine). */
 function dayIndex(epochMs: number): number {
@@ -18,13 +18,13 @@ interface Night {
   isToday: boolean;
 }
 
-/** The last `RIBBON_DAYS` days, each marked lit if a session happened on it.
+/** The last `TALLY_DAYS` days, each marked lit if a session happened on it.
  *  Derived straight from `sessions[]` — no separate counter. */
 function recentNights(sessions: StoredSession[]): Night[] {
   const today = dayIndex(Date.now());
   const lit = new Set(sessions.map((s) => dayIndex(s.startedAt)));
-  return Array.from({ length: RIBBON_DAYS }, (_, i) => {
-    const day = today - (RIBBON_DAYS - 1) + i;
+  return Array.from({ length: TALLY_DAYS }, (_, i) => {
+    const day = today - (TALLY_DAYS - 1) + i;
     return { lit: lit.has(day), isToday: day === today };
   });
 }
@@ -42,9 +42,11 @@ export function InsightsScreen() {
   return (
     <div className="shell view-enter">
       <TopBar />
-      <header className="col" style={{ marginBottom: 26 }}>
-        <span className="eyebrow">Insights</span>
-        <h1 className="display">Your practice</h1>
+      <header className="col" style={{ marginBottom: 28 }}>
+        <span className="overline overline-hour">Insights</span>
+        <h1 className="display" style={{ marginTop: 8 }}>
+          Your practice
+        </h1>
         <p className="faint" style={{ marginTop: 10 }}>
           Everything here is computed from sessions you actually did — never a separate
           chore.
@@ -52,7 +54,7 @@ export function InsightsScreen() {
       </header>
 
       {!hasData ? (
-        <div className="card text-center" style={{ padding: 40 }}>
+        <div className="col text-center" style={{ padding: '40px 0', borderTop: '1px solid var(--line)' }}>
           <p className="serif-italic" style={{ fontSize: '1.4rem' }}>
             Nothing logged yet.
           </p>
@@ -62,25 +64,29 @@ export function InsightsScreen() {
         </div>
       ) : (
         <>
-          <div className="insight-hero">
-            <span className="eyebrow">Current streak</span>
-            <div className="streak-num" style={{ marginTop: 6 }}>
+          <section className="stat-feature">
+            <div className="rule-head">
+              <span className="overline">Current streak</span>
+            </div>
+            <div className="streak-num">
               {insights.currentStreak}
               <span className="unit">
                 night{insights.currentStreak === 1 ? '' : 's'}
               </span>
             </div>
 
-            <div className="nights-ribbon" aria-hidden>
+            {/* the last fourteen nights as a tally — lit on the days a
+                session happened, a direct picture of the append-only log */}
+            <div className="tally" aria-hidden>
               {nights.map((n, i) => (
                 <span
                   key={i}
-                  className={`night-dot ${n.lit ? 'lit' : ''} ${n.isToday ? 'today' : ''}`}
+                  className={`tally-tick ${n.lit ? 'lit' : ''} ${n.isToday ? 'today' : ''}`}
                 />
               ))}
             </div>
-            <div className="ribbon-caption">
-              <span>{RIBBON_DAYS} nights ago</span>
+            <div className="tally-caption">
+              <span>{TALLY_DAYS} nights ago</span>
               <span>Tonight</span>
             </div>
 
@@ -89,25 +95,27 @@ export function InsightsScreen() {
               <Mini num={insights.totalMinutes} label="Minutes" unit="min" />
               <Mini num={insights.longestStreak} label="Longest" />
             </div>
-          </div>
+          </section>
 
           {moduleRows.length > 0 && (
-            <div className="col gap-sm" style={{ marginTop: 26 }}>
-              <span className="eyebrow">By practice</span>
-              {moduleRows.map((r) => (
-                <div key={r.id} className="list-row card">
-                  <span
-                    className="grow"
-                    style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem' }}
-                  >
-                    {MODULES[r.id as 'breath' | 'candle' | 'meditation'].name}
-                  </span>
-                  <span className="muted">
-                    {r.sessions} · {Math.round(r.minutes)} min
-                  </span>
-                </div>
-              ))}
-            </div>
+            <section className="col" style={{ marginTop: 32 }}>
+              <div className="rule-head">
+                <span className="overline">By practice</span>
+              </div>
+              <div className="index">
+                {moduleRows.map((r, i) => (
+                  <div key={r.id} className="index-row index-row-static">
+                    <span className="index-num">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="index-name grow">
+                      {MODULES[r.id as 'breath' | 'candle' | 'meditation'].name}
+                    </span>
+                    <span className="muted">
+                      {r.sessions} · {Math.round(r.minutes)} min
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
           )}
         </>
       )}

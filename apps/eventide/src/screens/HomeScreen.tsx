@@ -13,6 +13,10 @@ function greeting(): string {
   return 'Late night';
 }
 
+function dateline(): string {
+  return new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'long' });
+}
+
 // Before midday the morning chain leads; after, the evening one does. Both are
 // always one tap away — the order just follows the hour.
 function flowOrder(): RitualKind[] {
@@ -28,16 +32,19 @@ export function HomeScreen() {
 
   return (
     <div className="shell view-enter">
-      <header className="col" style={{ paddingTop: 18, paddingBottom: 30 }}>
-        <span className="eyebrow eyebrow-phase">{greeting()}</span>
-        <h1 className="display" style={{ marginTop: 8 }}>
+      <header className="masthead">
+        <div className="row between">
+          <span className="overline overline-hour">{greeting()}</span>
+          <span className="overline">{dateline()}</span>
+        </div>
+        <h1 className="display" style={{ marginTop: 22 }}>
           The turning
           <br />
           of the day
         </h1>
         {insights.currentStreak > 0 && (
           <p className="muted" style={{ marginTop: 14 }}>
-            <span className="serif-italic" style={{ color: 'var(--amber)' }}>
+            <span className="serif-italic" style={{ color: 'var(--ember)' }}>
               {insights.currentStreak} day{insights.currentStreak > 1 ? 's' : ''}
             </span>{' '}
             of practice. {insights.totalMinutes} minutes, all yours.
@@ -45,59 +52,64 @@ export function HomeScreen() {
         )}
       </header>
 
-      <div className="col gap stagger">
-        {order.map((kind, i) => {
+      <div className="col stagger" style={{ gap: 14 }}>
+        {order.map((kind) => {
           const flow = FLOWS[kind];
           return (
             <button
               key={kind}
-              className={`tonight-hero view-enter${kind === 'morning' ? ' hero-morning' : ''}`}
+              className={`passage${kind === 'morning' ? ' passage-morning' : ''}`}
               onClick={() => nav.push({ name: 'ritual-list', kind })}
             >
-              <span className="moon-badge">
-                <Icon name={flow.icon} size={26} />
+              <span className="passage-body">
+                <span className="overline passage-eyebrow">{flow.heroEyebrow}</span>
+                <span className="passage-title">{flow.heroTitle}</span>
+                <span className="passage-sub">{flow.heroSub}</span>
               </span>
-              <span className="eyebrow">{flow.heroEyebrow}</span>
-              <h2 style={{ fontSize: i === 0 ? '2rem' : '1.6rem', marginTop: 6 }}>
-                {flow.heroTitle}
-              </h2>
-              <p className="muted" style={{ marginTop: 8, maxWidth: 320 }}>
-                {flow.heroSub}
-              </p>
+              <span className="passage-arrow">
+                <Icon name="arrow" size={20} />
+              </span>
             </button>
           );
         })}
       </div>
 
-      <div className="col" style={{ marginTop: 30, gap: 14 }}>
-        <span className="eyebrow">Or a single practice</span>
-        <div className="tile-grid stagger">
-          {(['breath', 'candle', 'meditation'] as const).map((id) => {
+      <section className="col" style={{ marginTop: 36 }}>
+        <div className="rule-head">
+          <span className="overline">Or a single practice</span>
+        </div>
+        <div className="index stagger">
+          {(['breath', 'candle', 'meditation'] as const).map((id, i) => {
             const m = MODULES[id];
             return (
               <button
                 key={id}
-                className="tile"
+                className="index-row"
                 onClick={() => nav.push({ name: 'setup', module: id })}
-                style={id === 'meditation' ? { gridColumn: '1 / -1' } : undefined}
               >
-                <span className="tile-name">{m.name}</span>
-                <span className="tile-tag">{m.tagline}</span>
-                <span className={`tile-glyph glyph-${m.guide === 'orb' ? 'orb' : m.guide === 'flame' ? 'flame' : 'silent'}`} />
+                <span className="index-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="col grow" style={{ textAlign: 'left' }}>
+                  <span className="index-name">{m.name}</span>
+                  <span className="index-tag">{m.tagline}</span>
+                </span>
+                <span className="index-go">
+                  <Icon name="arrow" size={18} />
+                </span>
               </button>
             );
           })}
         </div>
-      </div>
+      </section>
 
       <div className="grow" />
 
-      <footer className="row between" style={{ paddingTop: 28 }}>
-        <button className="btn btn-ghost" onClick={() => nav.push({ name: 'insights' })}>
-          <Icon name="chart" size={18} /> Insights
+      <footer className="footer-links">
+        <button className="link-btn" onClick={() => nav.push({ name: 'insights' })}>
+          Insights
         </button>
-        <button className="icon-btn" aria-label="Settings" onClick={() => nav.push({ name: 'settings' })}>
-          <Icon name="gear" />
+        <span className="footer-dot">·</span>
+        <button className="link-btn" onClick={() => nav.push({ name: 'settings' })}>
+          Settings
         </button>
       </footer>
     </div>

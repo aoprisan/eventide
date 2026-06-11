@@ -7,7 +7,6 @@ import {
   type RitualKind,
   type RitualStep,
 } from '@eventide/engine';
-import type { IconName } from './components/ui.js';
 
 /** Catalog metadata for the three MVP modules. Pure data — no behavior. */
 export interface ModuleInfo {
@@ -106,8 +105,6 @@ export const DEFAULT_MORNING_RITUAL: Ritual = {
 export interface FlowInfo {
   kind: RitualKind;
   defaultRitual: Ritual;
-  /** Home hero + chrome. */
-  icon: IconName;
   heroEyebrow: string;
   heroTitle: string;
   heroSub: string;
@@ -128,7 +125,6 @@ export const FLOWS: Record<RitualKind, FlowInfo> = {
   evening: {
     kind: 'evening',
     defaultRitual: DEFAULT_RITUAL,
-    icon: 'moon',
     heroEyebrow: 'Tonight',
     heroTitle: 'Begin the wind-down',
     heroSub: 'A calm sequence to carry you toward sleep, hands-free.',
@@ -144,7 +140,6 @@ export const FLOWS: Record<RitualKind, FlowInfo> = {
   morning: {
     kind: 'morning',
     defaultRitual: DEFAULT_MORNING_RITUAL,
-    icon: 'sun',
     heroEyebrow: 'Morning',
     heroTitle: 'Rise into the day',
     heroSub: 'A short sequence to clear sleep and set an intention, hands-free.',

@@ -1,16 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <radialGradient id="sky" cx="35%" cy="25%" r="90%">
-      <stop offset="0%" stop-color="#1a2440"/>
-      <stop offset="100%" stop-color="#05070f"/>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e98e5e" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#e98e5e" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="moon" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f3d29a"/>
-      <stop offset="100%" stop-color="#d79a55"/>
+    <radialGradient id="star" cx="42%" cy="38%" r="70%">
+      <stop offset="0%" stop-color="#ffd9b0"/>
+      <stop offset="55%" stop-color="#e98e5e"/>
+      <stop offset="100%" stop-color="#b9602f"/>
+    </radialGradient>
+    <linearGradient id="refl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e98e5e" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#e98e5e" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="15" fill="url(#sky)"/>
-  <path d="M40 14a18 18 0 1 0 9 33 22 22 0 0 1-9-43z" fill="url(#moon)"/>
-  <path d="M6 47c6 0 6-4 13-4s7 4 13 4 6-4 13-4 7 4 13 4" fill="none"
-        stroke="#79d6cd" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+  <rect width="64" height="64" rx="15" fill="#0d0b09"/>
+  <circle cx="32" cy="29" r="22" fill="url(#glow)"/>
+  <circle cx="32" cy="29" r="9.5" fill="url(#star)"/>
+  <path d="M9 44h46" stroke="#ede5d8" stroke-opacity="0.4" stroke-width="1.6" stroke-linecap="round"/>
+  <rect x="29.5" y="46" width="5" height="11" rx="2.5" fill="url(#refl)"/>
 </svg>

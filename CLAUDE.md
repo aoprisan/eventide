@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-This repository currently contains only `Eventide_Design_Doc.md` — there is no code yet. The design doc is the source of truth for what to build. When implementing, follow the stack and architecture it specifies (Section 9) rather than introducing alternatives. There is no build/test/lint tooling yet; scaffold it per the decisions below when starting implementation.
+The MVP (design doc §10, v1) is implemented: `packages/engine` is the framework-agnostic `@eventide/engine` package, and `apps/eventide` is the React PWA shell (Breath/Candle/Meditation, the "Tonight"/morning ritual chains, insights, export/import). `Eventide_Design_Doc.md` remains the source of truth for *what* to build; follow its stack and architecture (Section 9) rather than introducing alternatives. Commands: `npm install`, `npm run dev`, `npm run typecheck`, `npm run build` (see README).
+
+The app's visual language is the **"Vesper"** design system (`apps/eventide/src/styles/global.css`): warm ink surfaces, hairline rules, editorial serif headings (Newsreader) over Albert Sans, one ember accent, and a single abstract horizon of light low on the page whose color follows the real hour (`src/horizon/useHorizon.ts`). No literal sky, stars, or weather — keep new UI within this language.
 
 ## The one architectural idea that governs everything
 
